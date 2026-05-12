@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">MAS Protocol</string>
-    <string name="title_activity_main">MAS Protocol</string>
+    <string name="app_name">Rexumer MAS</string>
+    <string name="title_activity_main">Rexumer MAS</string>
     <string name="package_name">com.multiversal.swarm</string>
     <string name="custom_url_scheme">com.multiversal.swarm</string>
 </resources>

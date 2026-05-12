@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.multiversal.swarm',
-  appName: 'MAS Protocol',
+  appName: 'Rexumer MAS',
   webDir: 'apps/web/dist'
 };
 
