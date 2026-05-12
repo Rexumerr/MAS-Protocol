@@ -48,6 +48,7 @@ jobs:
           npx ts-node scripts/sync-metrics.ts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORACLE_TOKEN: ${{ secrets.ORACLE_TOKEN }}
 
       - name: 🏗️ Build Dashboard (Astro)
         run: npm run build

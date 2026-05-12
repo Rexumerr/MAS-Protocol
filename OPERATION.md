@@ -2,14 +2,20 @@
 
 Este documento detalla cómo operar tu infraestructura de élite con el mínimo esfuerzo.
 
-## 🚀 Cómo "Alimentar" al Oráculo (Ingesta de Datos)
+## 🛡️ Seguridad Neural (Neural Gate)
 
-Para que tu portafolio se sienta vivo, debes enviar eventos al `OracleBridge`. Hemos preparado un script de ejemplo en `scripts/sync.ts`.
+Hemos elevado los estándares. El sistema ahora requiere una llave de acceso para aceptar datos.
 
-```bash
-# Ejemplo de envío de evento desde tu terminal
-npm run sync -- --event "new_lead_generated" --value 1
-```
+1.  **Configura tu Token:** Ve a GitHub -> Settings -> Secrets -> Actions y añade un secreto llamado `ORACLE_TOKEN`. Ponle una frase compleja.
+2.  **Operación Local:** Si ejecutas scripts localmente, asegúrate de exportar la variable:
+    ```bash
+    export ORACLE_TOKEN="tu_clave_secreta"
+    npm run sync
+    ```
+
+## 🔐 Privacidad Local-First
+
+El archivo `multiverse-state.json` ahora está **ofuscado** en Base64. Esto evita que la competencia o bots puedan leer tus niveles de negocio simplemente inspeccionando el código fuente. El dashboard de Astro se encarga de descifrarlo automáticamente durante la construcción.
 
 ## 📈 La Estrategia del 99 (Roadmap de Dominio)
 

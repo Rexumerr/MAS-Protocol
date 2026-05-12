@@ -1,9 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import multiverseState from '../data/multiverse-state.json';
 import CapabilityCard from '../components/CapabilityCard.astro';
 import NeuralTerminal from '../components/NeuralTerminal.astro';
 import MultiverseStand from '../components/MultiverseStand.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// OBFUSCATED STATE DECODING
+let multiverseState = {};
+try {
+    const statePath = path.resolve('./src/data/multiverse-state.json');
+    const rawData = fs.readFileSync(statePath, 'utf-8');
+    // Decode Base64 (The Neural Key)
+    const decodedData = Buffer.from(rawData, 'base64').toString('utf-8');
+    multiverseState = JSON.parse(decodedData);
+} catch (e) {
+    console.error("Neural Gate: Failed to decode state. Using default levels.", e);
+}
 
 const capabilities = [
   { name: 'Data Mining', level: multiverseState.DataMining || 85, xp: '12.5M', icon: '🔍' },

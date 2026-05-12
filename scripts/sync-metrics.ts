@@ -8,10 +8,12 @@ import { execSync } from 'child_process';
 
 function runBrainCli(event: string, value: number) {
     try {
+        const token = process.env.ORACLE_TOKEN || "development-only-key";
         console.log(`Ingesting event: ${event} with value: ${value}...`);
-        // Ejecutamos el binario de Rust compilado
-        execSync(`./packages/core-rs/target/release/brain-cli ingest --event "${event}" --value ${value} --state-path ./apps/web/src/data/multiverse-state.json`, {
-            stdio: 'inherit'
+        // Ejecutamos el binario de Rust compilado con el token de seguridad
+        execSync(`./packages/core-rs/target/release/brain-cli ingest --event "${event}" --value ${value} --state-path ./apps/web/src/data/multiverse-state.json --token "${token}"`, {
+            stdio: 'inherit',
+            env: { ...process.env, ORACLE_TOKEN: token }
         });
     } catch (error) {
         console.error(`Failed to ingest event ${event}:`, error);
