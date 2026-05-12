@@ -13,10 +13,15 @@
     "sync": "ts-node scripts/sync-metrics.ts"
   },
   "devDependencies": {
-    "turbo": "latest",
+    "@types/node": "^20.0.0",
     "prettier": "latest",
-    "typescript": "^5.0.0",
     "ts-node": "^10.9.0",
-    "@types/node": "^20.0.0"
+    "turbo": "latest",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.3.3",
+    "@capacitor/cli": "^8.3.3",
+    "@capacitor/core": "^8.3.3"
   }
 }
