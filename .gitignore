@@ -1,7 +1,32 @@
-node_modules
-.turbo
-dist
-target
+# --- ELITE MASTER GITIGNORE (MAS-PROTOCOL) ---
+
+# [RUST]
+/packages/core-rs/target/
+**/*.rs.bk
+Cargo.lock
+
+# [NODE / JS]
+node_modules/
+.npm/
+.turbo/
+dist/
 .env
-*.log
+.env.*
 .DS_Store
+*.log
+debug_report.log
+
+# [ANDROID / CAPACITOR]
+android/app/build/
+android/.gradle/
+android/local.properties
+android/captures/
+android/app/src/main/assets/public/
+android/app/src/main/assets/capacitor.config.json
+capacitor.config.json
+
+# [TEMPORARY / CACHE]
+.astro/
+.cache/
+.vscode/
+/data/data/com.termux/files/home/.npm/

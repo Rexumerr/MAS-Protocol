@@ -25,6 +25,15 @@ enum Commands {
         #[arg(short, long)]
         token: Option<String>,
     },
+    /// Manage Business Quests
+    Quest {
+        #[arg(short, long)]
+        action: String, // list, start, complete
+        #[arg(short, long)]
+        id: Option<String>,
+        #[arg(short, long, default_value = "state.json")]
+        state_path: String,
+    },
     /// Show current status of all capabilities
     Status {
         #[arg(short, long, default_value = "state.json")]
@@ -37,14 +46,11 @@ fn main() -> anyhow::Result<()> {
     let brain = UltraBrain::new();
     
     // SECURITY: NEURAL GATE
-    // We expect an ORACLE_TOKEN environment variable or a flag
     let required_token = env::var("ORACLE_TOKEN").unwrap_or_else(|_| "development-only-key".to_string());
-    
     let oracle = OracleBridge::new(required_token.clone());
 
     match cli.command {
         Commands::Ingest { event, value, state_path, token } => {
-            // Validate Token
             let provided_token = token.unwrap_or_else(|| "".to_string());
             if provided_token != required_token && env::var("ORACLE_TOKEN").is_ok() {
                 anyhow::bail!("CRITICAL: Unauthorized access to Neural Gate. Event rejected.");
@@ -52,14 +58,30 @@ fn main() -> anyhow::Result<()> {
 
             let result = oracle.ingest_event(&brain, event.clone(), value);
             println!("{}", result);
-            
-            // Save updated state with obfuscation
             save_state(&brain, &state_path)?;
         }
+        Commands::Quest { action, id, state_path } => {
+            match action.as_str() {
+                "list" => {
+                    println!("--- Rexumer Active Quests ---");
+                    println!("[1] Regional Market Dominance - Req: Infrastructure Lvl 70 (Status: InProgress)");
+                    println!("[2] High-Ticket Lead Factory - Req: LeadGen Lvl 50 (Status: Locked)");
+                },
+                "complete" => {
+                    if let Some(qid) = id {
+                        println!("Quest {} completed! +10,000 XP granted to Multiverse.", qid);
+                        brain.grant_xp(Capability::Optimization, 10000.0);
+                        save_state(&brain, &state_path)?;
+                    }
+                },
+                _ => println!("Unknown quest action."),
+            }
+        }
         Commands::Status { state_path: _ } => {
-            println!("--- Multiversal Status ---");
+            println!("--- Rexumer Multiversal Status ---");
             println!("DataMining: Level {}", brain.get_level(Capability::DataMining));
             println!("Automation: Level {}", brain.get_level(Capability::Automation));
+            println!("Infrastructure: Level {}", brain.get_level(Capability::Infrastructure));
         }
     }
 
