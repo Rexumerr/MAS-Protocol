@@ -6,16 +6,19 @@ on:
   schedule:
     - cron: '0 */12 * * *' # Cada 12 horas
 
+# Permisos necesarios para desplegar en GitHub Pages
+permissions:
+  contents: write
+
 jobs:
   sync-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
 
       - name: 🦀 Setup Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
+        uses: dtolnay/rust-toolchain@stable
 
       - name: 🛠️ Build Brain CLI
         run: |
@@ -23,20 +26,24 @@ jobs:
           cargo build --release --bin brain-cli
 
       - name: 🚀 Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm install
 
       - name: 🧬 Sync Multiversal Metrics
         run: |
-          npm install ts-node typescript -g
-          ts-node scripts/sync-metrics.ts
+          npx ts-node scripts/sync-metrics.ts
 
       - name: 🏗️ Build Dashboard (Astro)
         run: |
-          npm install
           npm run build
 
       - name: 🌐 Deploy to GitHub Pages
-        run: |
-          echo "Desplegando el Multiverso con métricas frescas..."
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./apps/web/dist
