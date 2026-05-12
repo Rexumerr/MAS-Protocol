@@ -1,7 +1,11 @@
 [package]
 name = "core-rs"
-version = "0.1.0"
+version = "1.0.0"
+authors = ["Architect of Realities <architect@multiversal.swarm>"]
 edition = "2021"
+description = "High-performance actor-based kernel for the MAS Protocol"
+license = "Apache-2.0"
+repository = "https://github.com/your-username/mas-protocol"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
