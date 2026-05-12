@@ -1,0 +1,48 @@
+---
+---
+<div class="bg-black/80 border border-blue-900/50 rounded-xl overflow-hidden font-mono shadow-2xl shadow-blue-900/20">
+    <div class="bg-blue-900/20 px-4 py-2 border-b border-blue-900/50 flex justify-between items-center">
+        <span class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Neural Terminal v1.0.4</span>
+        <div class="flex space-x-2">
+            <div class="w-2 h-2 rounded-full bg-blue-500/50"></div>
+            <div class="w-2 h-2 rounded-full bg-purple-500/50"></div>
+        </div>
+    </div>
+    <div id="terminal-logs" class="p-4 h-64 overflow-y-auto text-[10px] leading-relaxed text-blue-300/80 space-y-1 scrollbar-hide">
+        <p class="text-blue-400 font-bold">[SYSTEM] Initializing Multiversal Overmind...</p>
+        <p>[SYSTEM] Kernel: Rust 1.75.0-stable</p>
+        <p>[SYSTEM] Status: All Agents Synchronized.</p>
+        <p class="text-purple-400">> Swarm: Analyzing market trends in Venezuela_Region_A...</p>
+        <p class="text-green-400">> Agent-04: High-ticket lead detected. Value: $5,000.</p>
+    </div>
+    <div class="px-4 py-2 bg-blue-900/10 border-t border-blue-900/30 flex items-center">
+        <span class="text-blue-500 mr-2">$</span>
+        <input type="text" class="bg-transparent border-none outline-none text-blue-400 w-full text-[10px]" placeholder="Enter command (e.g., 'optimize --all')..." />
+    </div>
+</div>
+
+<script>
+    const logs = [
+        "> Brain: Recalculating ROI for Universe-7...",
+        "> Oracle: Event 'ad_spend_optimized' ingested. +150 XP.",
+        "> Swarm: Deploying 5 Worker Agents to DataMining dimension.",
+        "> [ALERT] Bottleneck detected in LeadGen funnel. Scaling agents...",
+        "> Agent-09: Successfully neutralized bottleneck. Automation Level Up!",
+        "> System: Level 99 goal for DataMining at 85% completion.",
+        "> Swarm: Sharding marketing assets across Multiverse nodes...",
+        "> Brain: Optimization cycle complete. Average ROI increased by 12%."
+    ];
+
+    const container = document.getElementById('terminal-logs');
+    let i = 0;
+
+    setInterval(() => {
+        const p = document.createElement('p');
+        p.textContent = logs[i % logs.length];
+        if (p.textContent.includes('ALERT')) p.className = 'text-red-400 font-bold';
+        if (p.textContent.includes('Level Up')) p.className = 'text-green-400 font-bold';
+        container.appendChild(p);
+        container.scrollTop = container.scrollHeight;
+        i++;
+    }, 3000);
+</script>

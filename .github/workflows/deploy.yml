@@ -1,0 +1,42 @@
+name: 🌌 Multiversal Deploy
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 */12 * * *' # Cada 12 horas
+
+jobs:
+  sync-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 🦀 Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: 🛠️ Build Brain CLI
+        run: |
+          cd packages/core-rs
+          cargo build --release --bin brain-cli
+
+      - name: 🚀 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 🧬 Sync Multiversal Metrics
+        run: |
+          npm install ts-node typescript -g
+          ts-node scripts/sync-metrics.ts
+
+      - name: 🏗️ Build Dashboard (Astro)
+        run: |
+          npm install
+          npm run build
+
+      - name: 🌐 Deploy to GitHub Pages
+        run: |
+          echo "Desplegando el Multiverso con métricas frescas..."
