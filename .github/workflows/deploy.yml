@@ -4,11 +4,12 @@ on:
   push:
     branches: [ main ]
   schedule:
-    - cron: '0 */12 * * *' # Cada 12 horas
+    - cron: '0 */12 * * *'
 
-# Permisos necesarios para desplegar en GitHub Pages
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   sync-and-deploy:
@@ -20,10 +21,17 @@ jobs:
       - name: 🦀 Setup Rust
         uses: dtolnay/rust-toolchain@stable
 
+      - name: 🏎️ Rust Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            packages/core-rs
+
       - name: 🛠️ Build Brain CLI
         run: |
           cd packages/core-rs
           cargo build --release --bin brain-cli
+          chmod +x target/release/brain-cli
 
       - name: 🚀 Setup Node.js
         uses: actions/setup-node@v4
@@ -32,18 +40,30 @@ jobs:
           cache: 'npm'
 
       - name: 📦 Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: 🧬 Sync Multiversal Metrics
         run: |
+          export PATH=$PATH:$(pwd)/packages/core-rs/target/release
           npx ts-node scripts/sync-metrics.ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🏗️ Build Dashboard (Astro)
-        run: |
-          npm run build
+        run: npm run build
 
-      - name: 🌐 Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: 📤 Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./apps/web/dist
+          path: ./apps/web/dist
+
+  deploy:
+    needs: sync-and-deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
