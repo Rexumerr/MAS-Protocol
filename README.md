@@ -40,7 +40,7 @@ The protocol is structured as a **Hierarchical Swarm** where every business enti
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/mas-protocol.git
+git clone https://github.com/Rexumerr/MAS-Protocol.git
 
 # Install dependencies
 npm install
