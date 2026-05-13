@@ -1,23 +1,25 @@
-# 🤝 Contributing to MAS Protocol
+# 🤝 Contributing to MAS Protocol (Vanguard Edition)
 
-We're excited that you're interested in contributing to the **MAS Protocol**! As an elite orchestration ecosystem, we hold our code and architecture to the highest standards.
+We're looking for elite engineers to help build the future of autonomous scaling. Contributing to the **MAS Protocol** requires technical excellence and architectural discipline.
 
-## 📜 Code of Conduct
-We follow a professional and excellence-driven code of conduct. Respect the architecture, follow the patterns, and strive for 10/10 quality.
+## 📜 Professional Standards
 
-## 🛠️ Development Workflow
+1.  **Excellence First:** We do not accept mediocre code. Every PR must be a technical masterpiece.
+2.  **Rust 2024:** All core logic must adhere to the Rust 2024 Edition standards.
+3.  **Security Mandate:** Any change affecting state or networking MUST be vetted through our `NeuralCrypt` audit process.
+4.  **Zero Warnings:** `cargo clippy` must be clean. No exceptions.
 
-1.  **Fork & Clone:** Work on your own branch.
-2.  **Rust Standards:** All core logic must be written in idiomatic Rust. Run `cargo fmt` and `cargo clippy` before submitting.
-3.  **WASM First:** Ensure all core changes are compatible with the `wasm32-unknown-unknown` target.
-4.  **Conventional Commits:** Use clear, semantic commit messages (e.g., `feat:`, `fix:`, `docs:`, `refactor:`).
+## 🛠️ Workflow
 
-## 🧪 Testing
-Every capability change must include corresponding unit tests in `packages/core-rs/src/tests.rs` (if applicable) and be verified through the `turbo test` suite.
+- **Strategic Issues:** All work must be linked to a Strategic Quest (GitHub Issue).
+- **Conventional Commits:** Use `feat!`, `fix!`, `sec:`, etc.
+- **Testing:** 100% coverage is the baseline for core modules.
 
-## 🚀 Submitting Pull Requests
-- Provide a clear description of the change.
-- Link any related issues or "Quests".
-- Ensure the CI/CD pipeline passes.
+## 🧪 Verification
+```bash
+cd packages/core-rs
+cargo test
+cargo clippy -- -D warnings
+```
 
-Thank you for helping us build the future of autonomous scaling!
+Thank you for contributing to the 2026 orchestration standard.

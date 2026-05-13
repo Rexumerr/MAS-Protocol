@@ -1,84 +1,81 @@
 # 🌌 MAS Protocol: Multiversal Agentic Swarm
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Rust](https://img.shields.io/badge/Kernel-Rust_1.75+-orange.svg)](https://www.rust-lang.org/)
-[![WASM](https://img.shields.io/badge/Interface-WASM-green.svg)](https://webassembly.org/)
-[![Framework](https://img.shields.io/badge/Framework-Astro_4.0-purple.svg)](https://astro.build/)
+[![Rust](https://img.shields.io/badge/Kernel-Rust_2024_Edition-orange.svg)](https://www.rust-lang.org/)
+[![Vanguard](https://img.shields.io/badge/Revision-2026.05.13-gold.svg)](./NEURAL_STRATEGY.md)
+[![WASM](https://img.shields.io/badge/Interface-WASM_Cutting_Edge-green.svg)](https://webassembly.org/)
 
-**MAS Protocol** is a high-performance, autonomous orchestration ecosystem designed for high-stakes business automation. It leverages a hierarchical actor model built in Rust, operating across isolated "universes" to deliver industrial-grade scaling and intelligence.
+**MAS Protocol** is a vanguard, high-performance orchestration ecosystem designed for autonomous, industrial-scale business scaling. Built on the **Rust 2024 Edition**, it utilizes a hierarchical actor model to govern intelligent swarms across isolated multiversal dimensions.
 
-> "The infrastructure that scales while the world sleeps."
+> "Maximum efficiency, zero compromise. The architecture of the 2026 global economy."
 
 ---
 
-## 🏗️ Architecture: The Multiverse Core
+## 📽️ Interactive Visuals & Demos
 
-The protocol is structured as a **Hierarchical Swarm** where every business entity exists within its own logical universe, governed by the **Ultra-Brain** kernel.
+### ⚡ Neural Reactor Live Preview
+*(Próximamente: Integración de video interactivo/Asciinema aquí)*
+Visualice el crecimiento de su enjambre en tiempo real. Observe cómo los niveles de **Optimization**, **LeadGen** y **Security** escalan dinámicamente según la ingesta de datos del mundo real.
+
+---
+
+## 🏗️ Architecture: The 2026 Vanguard Core
+
+The protocol is structured as a **Hierarchical Swarm** where every business entity exists within its own encrypted logical universe, governed by the **Ultra-Brain** kernel.
 
 ### Key Dimensions
-- **Dimension 0 (The Overmind):** Global orchestration and real-time monitoring.
-- **Dimension 1 (Architect Agents):** Strategic planners that decompose high-level business goals into tasks.
+- **Dimension 0 (The Overmind):** Global orchestration and 2026-grade security monitoring.
+- **Dimension 1 (Architect Agents):** Strategic planners using the Vanguard reasoning engine.
 - **Dimension 2 (Worker Swarm):** Specialized units for Data Mining, Automation, Lead Gen, and Security.
-- **Oracle Bridge:** The interface between the digital swarm and real-world metrics (APIs).
+- **Neural Crypt Bridge:** Military-grade AES-GCM encrypted interface for real-world API metrics.
 
-## 🚀 Technical Highlights
+## 🚀 Vanguard Technical Highlights (Revision 2026)
 
-- **Rust-Powered Kernel:** Memory-safe, ultra-fast, and concurrent logic using `dashmap` and the Actor Model.
-- **WebAssembly Integration:** Run the brain directly in the browser or at the edge for sub-millisecond latency.
-- **3D Neural Reactor:** Real-time visual representation of the swarm's health and activity using Three.js.
-- **RPG Progression Framework:** Business capabilities evolve through a gamified level system (1-99), providing a clear and addictive roadmap for scaling.
-- **Autonomous Sync:** Periodic ingestion of real-world events via GitHub Actions to maintain a "living" state.
+- **Rust 2024 Kernel:** Utilizing the absolute cutting edge of memory safety and zero-cost abstractions.
+- **Vanguard RPG Meta-Layer:** A non-linear business progression system inspired by MMORPGs.
+    - **Farming:** Data Mining & Market Scraping.
+    - **Smithing (Forja):** Automated Infrastructure & Tooling construction.
+    - **Alchemy:** Transforming raw data into high-value insights.
+    - **Combat:** Defending the system via industrial-grade cyber-security.
+- **Neural Cryptography:** Every state transition (including RPG levels and inventory) is protected by AES-GCM 256-bit encryption.
+- **Persistent Avatar & Inventory:** Every agent instance is a unique **Vanguard Avatar** with its own secure inventory of materials like `RawData`.
+- **Industrial-Grade Concurrency:** Powered by `DashMap 6.0` and `Tokio 1.40+` for sub-millisecond orchestration.
+- **Zero-Trust Oracle:** Mandatory token validation for all real-world event ingestions (XP and material rewards).
 
-## 🛠️ Getting Started
+## 🛠️ Installation & Operation
 
 ### Prerequisites
-- **Rust & Cargo:** (Latest stable)
-- **Node.js:** v18+
-- **pnpm:** (Recommended) or npm
-- **wasm-pack:** For compiling the core to WebAssembly
+- **Rust & Cargo:** (2024 Edition / Rust 1.85+)
+- **Node.js:** v22+ (2026 LTS recommended)
+- **pnpm:** (Mandatory for workspace management)
 
-### Installation
+### Quick Start
 ```bash
-# Clone the repository
+# Clone the vanguard repository
 git clone https://github.com/Rexumerr/MAS-Protocol.git
 
 # Install dependencies
-npm install
+pnpm install
 
-# Build the Rust core
+# Build the encrypted Rust core
 cd packages/core-rs
 cargo build --release
 ```
 
-### Building the Multiverse
-```bash
-# Build the WASM package
-npm run build-wasm
+## 🗺️ Strategic Roadmap: The Path to Singularity
 
-# Start the Command Center (Dashboard)
-npm run dev
-```
+- [x] **Vanguard Revision (May 2026):** Security hardening, Rust 2024 upgrade, and Encrypted Persistence.
+- [ ] **Phase 4:** Multi-LLM Orchestration Layer (Scheduled Q3 2026).
+- [ ] **Phase 5:** Mobile Neural Interface & AR Swarm Visualization.
 
-## 📜 Manual of Operations
+## 🤝 Elite Contribution
 
-Detailed guidance on operating the swarm, ingesting data, and managing universes can be found in the [OPERATION.md](./OPERATION.md) and the [Technical Whitepaper](./docs/ARCHITECTURE.md).
-
-## 🗺️ Roadmap
-
-- [x] Phase 1: Core Kernel (Rust) & Actor Model.
-- [x] Phase 2: WASM Integration & 3D Reactor.
-- [x] Phase 3: Autonomous Oracle Bridge.
-- [ ] Phase 4: Multi-LLM Orchestration Layer.
-- [ ] Phase 5: Mobile Neural Interface.
-
-## 🤝 Contributing
-
-We welcome contributions from architects and engineers who believe in the power of autonomous scaling. Please see [CONTRIBUTING.md](./CONTRIBUTING.md).
+We only accept excellence. If you are a senior systems engineer or a strategic architect, read our [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ---
 
-## 📞 Elite Support & Integration
+## 📞 Strategic Integration
 
-For high-ticket enterprise integration and custom agent development, contact the **Architect of Realities**.
+For high-ticket enterprise integration and custom vanguard agent development, contact the **Architect of Realities**.
 
-*Licensed under the Apache License, Version 2.0.*
+*Licensed under the Apache License, Version 2.0. (c) 2026 MAS-Protocol.*

@@ -2,8 +2,8 @@
 name = "core-rs"
 version = "1.0.0"
 authors = ["Architect of Realities <architect@multiversal.swarm>"]
-edition = "2021"
-description = "High-performance actor-based kernel for the MAS Protocol"
+edition = "2024"
+description = "Vanguard actor-based kernel for the MAS Protocol (2026 Revision)"
 license = "Apache-2.0"
 repository = "https://github.com/Rexumerr/MAS-Protocol"
 
@@ -15,15 +15,20 @@ name = "brain-cli"
 path = "src/main.rs"
 
 [dependencies]
-serde = { version = "1.0", features = ["derive"] }
+serde = { version = "1.0", features = ["derive", "rc"] }
 serde_json = "1.0"
 wasm-bindgen = "0.2"
 async-trait = "0.1"
 futures = "0.3"
-uuid = { version = "1.0", features = ["v4", "wasm-bindgen"] }
-dashmap = "5.5"
-thiserror = "1.0"
+dashmap = { version = "6.0", features = ["serde"] }
+thiserror = "2.0"
 chrono = { version = "0.4", features = ["serde"] }
-clap = { version = "4.0", features = ["derive"] } # CLI argument parsing
+clap = { version = "4.5", features = ["derive"] } # CLI argument parsing
 anyhow = "1.0"
-base64 = "0.21"
+base64 = "0.22"
+aes-gcm = "0.10"
+pbkdf2 = "0.12"
+sha2 = "0.10"
+rand = "0.9"
+getrandom = "0.3"
+tokio = { version = "1.40", features = ["full"] }
