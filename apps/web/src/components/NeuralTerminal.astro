@@ -43,7 +43,7 @@
     const thermalAlert = document.getElementById('thermal-alert');
     let i = 0;
 
-    setInterval(() => {
+    setInterval(async () => {
         if (!container) return;
         const p = document.createElement('p');
         p.textContent = logs[i % logs.length];
@@ -54,11 +54,17 @@
         container.scrollTop = container.scrollHeight;
         i++;
 
-        // Simulación de detección proactiva de enfriamiento para QA visual
-        if (Math.random() > 0.85) {
-            thermalAlert?.classList.remove('hidden');
-        } else {
-            thermalAlert?.classList.add('hidden');
+        // Fetch Real Telemetry from Governor Bridge
+        try {
+            const res = await fetch('/health-status.json');
+            const status = await res.json();
+            if (status.cooling_active) {
+                thermalAlert?.classList.remove('hidden');
+            } else {
+                thermalAlert?.classList.add('hidden');
+            }
+        } catch (e) {
+            console.warn("Telemetry bridge unreachable.");
         }
     }, 2500);
 </script>

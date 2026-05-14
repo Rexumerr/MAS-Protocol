@@ -2,6 +2,7 @@ use clap::{Parser, Subcommand};
 use colored::*;
 use sysinfo::{System, CpuRefreshKind, RefreshKind, MemoryRefreshKind};
 use std::process::{Command, Stdio};
+use std::fs;
 use std::time::{Duration, Instant};
 use tokio::time::sleep;
 use std::collections::VecDeque;
@@ -76,20 +77,18 @@ impl ProactiveGovernor {
         let cpu_usage = self.sys.global_cpu_usage();
         let mem_usage = (self.sys.used_memory() as f64 / self.sys.total_memory() as f64) * 100.0;
         
-        // Update history for trend analysis
+        // Update history
         if self.history.len() >= 10 { self.history.pop_front(); }
         self.history.push_back((cpu_usage, mem_usage));
 
-        // 🧠 PROACTIVE LOGIC: Trend Prediction
+        // Predictive logic...
         let cpu_trend = self.calculate_trend(|h| h.0 as f64);
         let mem_trend = self.calculate_trend(|h| h.1);
 
-        // Pre-emptive decisions
         if mem_trend > 2.0 && mem_usage > 70.0 && self.last_shard.elapsed() > Duration::from_secs(300) {
             self.mode = ExecutionMode::Preemptive(PreemptiveAction::EarlySharding);
             self.trigger_early_shard();
         } else if cpu_trend > 8.0 && cpu_usage > 40.0 {
-            // Predict thermal spike > 45C based on CPU acceleration
             self.mode = ExecutionMode::Preemptive(PreemptiveAction::NeuralCooling);
             self.trigger_neural_cooling();
         } else if cpu_trend > 5.0 && cpu_usage > 50.0 {
@@ -103,6 +102,15 @@ impl ProactiveGovernor {
         } else {
             self.mode = ExecutionMode::Balanced;
         }
+
+        // Bridge Telemetry to JSON for Dashboard
+        let telemetry = serde_json::json!({
+            "cpu": cpu_usage,
+            "mem": mem_usage,
+            "mode": format!("{:?}", self.mode),
+            "cooling_active": matches!(self.mode, ExecutionMode::Preemptive(PreemptiveAction::NeuralCooling))
+        });
+        let _ = fs::write("apps/web/public/health-status.json", telemetry.to_string());
     }
 
     fn calculate_trend<F>(&self, mapper: F) -> f64 
