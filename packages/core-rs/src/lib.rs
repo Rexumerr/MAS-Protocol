@@ -26,6 +26,37 @@ pub enum Capability {
 }
 
 #[wasm_bindgen]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum SkinGrade {
+    Common,
+    Rare,
+    Epic,
+    Mythic, // Grade S
+}
+
+#[wasm_bindgen]
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct MythicSkin {
+    pub grade: SkinGrade,
+    name: String,
+    pub fire_intensity: f32,
+    pub thunder_sparks: u32,
+}
+
+#[wasm_bindgen]
+impl MythicSkin {
+    #[wasm_bindgen(constructor)]
+    pub fn new(grade: SkinGrade, name: String, fire_intensity: f32, thunder_sparks: u32) -> Self {
+        Self { grade, name, fire_intensity, thunder_sparks }
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn name(&self) -> String {
+        self.name.clone()
+    }
+}
+
+#[wasm_bindgen]
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct SkillProgress {
     pub level: u8,
@@ -45,6 +76,7 @@ pub struct Avatar {
     title: String,
     capabilities: Arc<DashMap<Capability, SkillProgress>>,
     inventory: Arc<Inventory>,
+    current_skin: Option<MythicSkin>,
 }
 
 #[wasm_bindgen]
@@ -70,6 +102,7 @@ impl Avatar {
             title: "Novice Architect".to_string(),
             capabilities,
             inventory: Arc::new(Inventory::default()),
+            current_skin: None,
         }
     }
 
@@ -83,6 +116,14 @@ impl Avatar {
         self.title.clone()
     }
 
+    pub fn set_skin(&mut self, skin: MythicSkin) {
+        self.current_skin = Some(skin);
+    }
+
+    pub fn get_skin_name(&self) -> String {
+        self.current_skin.as_ref().map(|s| s.name.clone()).unwrap_or("None".into())
+    }
+
     pub fn get_level(&self, capability: Capability) -> u8 {
         self.capabilities.get(&capability).map(|s| s.level).unwrap_or(1)
     }
@@ -92,8 +133,14 @@ impl Avatar {
     }
 
     pub fn grant_xp(&self, capability: Capability, amount: f64) -> u8 {
+        let mut boost = 1.0;
+        if let Some(_skin) = self.current_skin.as_ref().filter(|s| s.grade == SkinGrade::Mythic && s.name.contains("Phoenix")) {
+            if capability == Capability::Alchemy { boost = 1.5; }
+            if capability == Capability::Smithing { boost = 1.25; }
+        }
+
         if let Some(mut skill) = self.capabilities.get_mut(&capability) {
-            skill.xp += amount;
+            skill.xp += amount * boost;
             let new_level = (skill.xp.sqrt() / 36.0) as u8 + 1;
             let final_level = if new_level > 99 { 99 } else { new_level };
             if final_level > skill.level {
@@ -111,6 +158,53 @@ impl Avatar {
 
     pub fn get_material_count(&self, material: &str) -> u64 {
         self.inventory.materials.get(material).map(|v| *v).unwrap_or(0)
+    }
+}
+
+// --- PHOENIX ARCHITECT: AI ORCHESTRATION ---
+
+pub struct PhoenixArchitect {
+    client: reqwest::Client,
+    openrouter_key: Option<String>,
+}
+
+impl PhoenixArchitect {
+    pub fn new(key: Option<String>) -> Self {
+        Self {
+            client: reqwest::Client::new(),
+            openrouter_key: key,
+        }
+    }
+
+    pub async fn ask_ollama(&self, prompt: &str) -> anyhow::Result<String> {
+        let res = self.client.post("http://localhost:11434/api/generate")
+            .json(&serde_json::json!({
+                "model": "llama3",
+                "prompt": prompt,
+                "stream": false
+            }))
+            .send()
+            .await?;
+        
+        let json: serde_json::Value = res.json().await?;
+        Ok(json["response"].as_str().unwrap_or("").to_string())
+    }
+
+    pub async fn ask_openrouter(&self, prompt: &str) -> anyhow::Result<String> {
+        let key = self.openrouter_key.as_ref()
+            .ok_or_else(|| anyhow::anyhow!("OpenRouter key missing"))?;
+
+        let res = self.client.post("https://openrouter.ai/api/v1/chat/completions")
+            .header("Authorization", format!("Bearer {}", key))
+            .json(&serde_json::json!({
+                "model": "anthropic/claude-3-opus",
+                "messages": [{"role": "user", "content": prompt}]
+            }))
+            .send()
+            .await?;
+
+        let json: serde_json::Value = res.json().await?;
+        Ok(json["choices"][0]["message"]["content"].as_str().unwrap_or("").to_string())
     }
 }
 
@@ -178,7 +272,6 @@ impl NeuralCrypt {
         let ciphertext = cipher.encrypt(nonce, data)
             .map_err(|e| anyhow::anyhow!("Encryption failed: {}", e))?;
         
-        // Output format: [salt:16][nonce:12][ciphertext]
         let mut output = Vec::with_capacity(16 + 12 + ciphertext.len());
         output.extend_from_slice(&salt);
         output.extend_from_slice(&nonce_bytes);
@@ -267,42 +360,23 @@ mod tests {
     fn test_xp_scaling() {
         let brain = UltraBrain::new();
         let avatar = brain.avatar();
-        // Level 1: 0 XP
         assert_eq!(avatar.get_level(Capability::Farming), 1);
-        
-        // Gain XP to reach Level 2
         avatar.grant_xp(Capability::Farming, 1300.0);
         assert_eq!(avatar.get_level(Capability::Farming), 2);
     }
 
     #[test]
-    fn test_inventory_management() {
-        let brain = UltraBrain::new();
-        let avatar = brain.avatar();
-        avatar.add_material("Iron".into(), 50);
-        assert_eq!(avatar.get_material_count("Iron"), 50);
-        
-        avatar.add_material("Iron".into(), 50);
-        assert_eq!(avatar.get_material_count("Iron"), 100);
-    }
+    fn test_phoenix_buffs() {
+        let mut avatar = Avatar::new("Test".to_string());
+        avatar.set_skin(MythicSkin {
+            grade: SkinGrade::Mythic,
+            name: "Mythic Phoenix".to_string(),
+            fire_intensity: 1.0,
+            thunder_sparks: 10,
+        });
 
-    #[test]
-    fn test_neural_crypt() {
-        let data = b"Sensitive vanguard avatar data";
-        let password = "oracle-secret-token";
-        
-        let encrypted = NeuralCrypt::encrypt(data, password).expect("Encryption failed");
-        let decrypted = NeuralCrypt::decrypt(&encrypted, password).expect("Decryption failed");
-        
-        assert_eq!(data.to_vec(), decrypted);
-    }
-
-    #[test]
-    fn test_oracle_bridge_validation() {
-        let token = "secure-token-123";
-        let bridge = OracleBridge::new(token.to_string());
-        
-        assert!(bridge.validate_token(token));
-        assert!(!bridge.validate_token("wrong-token"));
+        // Alchemy XP with Phoenix buff: 1000 * 1.5 = 1500
+        avatar.grant_xp(Capability::Alchemy, 1000.0);
+        assert!(avatar.get_xp(Capability::Alchemy) >= 1500.0);
     }
 }

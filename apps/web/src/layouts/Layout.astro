@@ -20,24 +20,69 @@ const { title } = Astro.props;
 		<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 		<script src="https://cdn.tailwindcss.com"></script>
 	</head>
-	<body class="bg-black">
+	<body class="bg-[#050505] text-cyan-50/90 selection:bg-magenta-500/30">
+        <!-- CYBERPUNK OVERLAY -->
+        <div class="fixed inset-0 pointer-events-none z-[9999] opacity-[0.03] scanlines"></div>
+        <div class="fixed inset-0 pointer-events-none z-0 bg-[radial-gradient(circle_at_50%_50%,rgba(20,20,20,0)_0%,rgba(5,5,5,1)_100%)]"></div>
+        <div class="fixed inset-0 pointer-events-none z-0 cyberpunk-grid"></div>
+        
 		<slot />
 	</body>
 </html>
 <style is:global>
 	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
+		--neon-cyan: #00ffff;
+		--neon-magenta: #ff00ff;
+        --neon-green: #39ff14;
 	}
 	html {
 		font-family: 'JetBrains Mono', monospace;
-		background: #13151a;
+		background: #050505;
+        color-scheme: dark;
 	}
+
+    .cyberpunk-grid {
+        background-image: 
+            linear-gradient(to right, rgba(255, 0, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 0, 255, 0.05) 1px, transparent 1px);
+        background-size: 50px 50px;
+    }
+
+    .scanlines {
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0) 50%,
+            rgba(0, 0, 0, 0.5) 50%
+        );
+        background-size: 100% 4px;
+    }
+
+    @keyframes flicker {
+        0% { opacity: 0.97; }
+        5% { opacity: 0.95; }
+        10% { opacity: 0.9; }
+        15% { opacity: 0.99; }
+        100% { opacity: 1; }
+    }
+
+    .neon-text-cyan {
+        color: var(--neon-cyan);
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    .neon-border-magenta {
+        border-color: rgba(255, 0, 255, 0.5);
+        box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+    }
+
+    ::-webkit-scrollbar {
+        width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #050505;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: var(--neon-magenta);
+        border-radius: 10px;
+    }
 </style>

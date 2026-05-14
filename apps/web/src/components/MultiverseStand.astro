@@ -1,6 +1,10 @@
-<div id="canvas-container" class="w-full h-[400px] lg:h-[600px] relative cursor-grab active:cursor-grabbing rounded-3xl overflow-hidden border border-white/5 bg-gradient-to-b from-blue-900/10 to-black">
-    <div class="absolute top-4 left-4 z-10 pointer-events-none">
-        <span class="text-[10px] text-blue-500 font-bold uppercase tracking-[0.4em]">3D Neural Reactor</span>
+<div id="canvas-container" class="w-full h-[400px] lg:h-[700px] relative cursor-grab active:cursor-grabbing rounded-3xl overflow-hidden border border-orange-500/20 bg-[#050505]">
+    <div class="absolute top-6 left-6 z-10 pointer-events-none">
+        <span class="text-[10px] text-orange-400 font-bold uppercase tracking-[0.5em] drop-shadow-[0_0_8px_rgba(251,146,60,0.8)]">Mythic Phoenix Grade S</span>
+    </div>
+    <div class="absolute bottom-6 right-6 z-10 pointer-events-none text-right">
+        <span class="text-[8px] text-orange-500 font-mono block">AI_ORCHESTRATOR: ACTIVE</span>
+        <span class="text-[8px] text-cyan-500/50 font-mono block">THUNDER_INTENSITY: HIGH</span>
     </div>
     <div id="three-canvas"></div>
 </div>
@@ -8,60 +12,95 @@
 <script>
     import * as THREE from 'three';
 
-    let container, scene, camera, renderer, globe, particles;
+    let container, scene, camera, renderer, core, fireParticles, thunderSparks = [], grid;
+
+    function createPhoenix() {
+        const group = new THREE.Group();
+        
+        // Body: Translucent Fire Crystal
+        const bodyGeo = new THREE.IcosahedronGeometry(1.2, 2);
+        const bodyMat = new THREE.MeshPhysicalMaterial({
+            color: 0xff4500,
+            emissive: 0xff0000,
+            emissiveIntensity: 2.0,
+            transparent: true,
+            opacity: 0.7,
+            transmission: 0.9,
+            thickness: 1.0,
+        });
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        group.add(body);
+
+        // Wings (Particle Systems)
+        const wingParticlesGeo = new THREE.BufferGeometry();
+        const count = 4000;
+        const positions = new Float32Array(count * 3);
+        const colors = new Float32Array(count * 3);
+
+        for(let i=0; i<count; i++) {
+            positions[i*3] = (Math.random() - 0.5) * 6;
+            positions[i*3+1] = (Math.random() - 0.5) * 3;
+            positions[i*3+2] = (Math.random() - 0.5) * 2;
+            
+            colors[i*3] = 1.0; // R
+            colors[i*3+1] = Math.random() * 0.4; // G
+            colors[i*3+2] = 0.0; // B
+        }
+
+        wingParticlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        wingParticlesGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const wingMat = new THREE.PointsMaterial({
+            size: 0.04,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
+        });
+
+        fireParticles = new THREE.Points(wingParticlesGeo, wingMat);
+        group.add(fireParticles);
+
+        return group;
+    }
 
     function init() {
         container = document.getElementById('three-canvas');
         const width = document.getElementById('canvas-container').clientWidth;
         const height = document.getElementById('canvas-container').clientHeight;
 
-        // Scene setup
         scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x050505, 0.1);
+
         camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-        camera.position.z = 5;
+        camera.position.set(0, 2, 8);
+        camera.lookAt(0, 0, 0);
 
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(width, height);
         renderer.setPixelRatio(window.devicePixelRatio);
         container.appendChild(renderer.domElement);
 
-        // Central Core (The Brain)
-        const geometry = new THREE.IcosahedronGeometry(1.5, 1);
-        const material = new THREE.MeshPhongMaterial({
-            color: 0x2563eb,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.8,
-            emissive: 0x1d4ed8,
-            emissiveIntensity: 0.5
-        });
-        globe = new THREE.Mesh(geometry, material);
-        scene.add(globe);
+        // Grid Floor
+        grid = new THREE.GridHelper(20, 20, 0xff4500, 0x221100);
+        grid.position.y = -3;
+        scene.add(grid);
 
-        // Floating Agents (Particles)
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 500;
-        const posArray = new Float32Array(particlesCount * 3);
+        // Core Phoenix
+        core = createPhoenix();
+        scene.add(core);
 
-        for(let i=0; i < particlesCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 10;
+        // Thunder Sparks
+        for(let i=0; i<8; i++) {
+            const points = [new THREE.Vector3(0,0,0), new THREE.Vector3((Math.random()-0.5)*5, (Math.random()-0.5)*5, (Math.random()-0.5)*5)];
+            const sparkGeo = new THREE.BufferGeometry().setFromPoints(points);
+            const sparkMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0 });
+            const spark = new THREE.Line(sparkGeo, sparkMat);
+            scene.add(spark);
+            thunderSparks.push(spark);
         }
 
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.02,
-            color: 0x60a5fa,
-            transparent: true,
-            opacity: 0.5
-        });
-        particles = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particles);
-
-        // Lights
-        const light = new THREE.PointLight(0xffffff, 1, 100);
-        light.position.set(10, 10, 10);
-        scene.add(light);
-        const ambientLight = new THREE.AmbientLight(0x404040);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
         scene.add(ambientLight);
 
         animate();
@@ -69,34 +108,46 @@
 
     function animate() {
         requestAnimationFrame(animate);
+        const time = Date.now() * 0.001;
 
-        globe.rotation.y += 0.005;
-        globe.rotation.x += 0.002;
-        particles.rotation.y -= 0.001;
+        core.rotation.y += 0.005;
+        fireParticles.scale.y = 1 + Math.sin(time * 3) * 0.15;
+        
+        // Particle Ascension
+        const pos = fireParticles.geometry.attributes.position.array;
+        for(let i=0; i<pos.length; i+=3) {
+            pos[i+1] += 0.02;
+            if (pos[i+1] > 3) pos[i+1] = -2;
+        }
+        fireParticles.geometry.attributes.position.needsUpdate = true;
 
-        // Pulse effect
-        const scale = 1 + Math.sin(Date.now() * 0.002) * 0.05;
-        globe.scale.set(scale, scale, scale);
+        // Thunder Flicker
+        thunderSparks.forEach(s => {
+            if (Math.random() > 0.96) {
+                s.material.opacity = 1.0;
+                s.geometry.setFromPoints([
+                    new THREE.Vector3((Math.random()-0.5)*2, (Math.random()-0.5)*2, (Math.random()-0.5)*2),
+                    new THREE.Vector3((Math.random()-0.5)*6, (Math.random()-0.5)*6, (Math.random()-0.5)*6)
+                ]);
+            } else {
+                s.material.opacity *= 0.85;
+            }
+        });
 
         renderer.render(scene, camera);
     }
 
-    // Initialize on load
     init();
 
-    // Handle resize
     window.addEventListener('resize', () => {
-        const width = document.getElementById('canvas-container').clientWidth;
-        const height = document.getElementById('canvas-container').clientHeight;
-        camera.aspect = width / height;
+        const c = document.getElementById('canvas-container');
+        if (!c) return;
+        renderer.setSize(c.clientWidth, c.clientHeight);
+        camera.aspect = c.clientWidth / c.clientHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(width, height);
     });
 </script>
 
 <style>
-    #three-canvas {
-        width: 100%;
-        height: 100%;
-    }
+    #three-canvas { width: 100%; height: 100%; filter: drop-shadow(0 0 30px rgba(255, 69, 0, 0.2)); }
 </style>

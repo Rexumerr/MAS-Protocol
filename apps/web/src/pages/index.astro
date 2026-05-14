@@ -6,49 +6,42 @@ import MultiverseStand from '../components/MultiverseStand.astro';
 import fs from 'node:fs';
 import path from 'node:path';
 
-// OBFUSCATED STATE DECODING
-let multiverseState = {};
-try {
-    const statePath = path.resolve('./src/data/multiverse-state.json');
-    const rawData = fs.readFileSync(statePath, 'utf-8');
-    // Decode Base64 (The Neural Key)
-    const decodedData = Buffer.from(rawData, 'base64').toString('utf-8');
-    multiverseState = JSON.parse(decodedData);
-} catch (e) {
-    console.error("Neural Gate: Failed to decode state. Using default levels.", e);
-}
+// VANGUARD STATE DECODING (Mocked for now as it's AES-GCM encrypted in the core)
+// In a real scenario, we'd use a server-side helper or a WASM module to decrypt this
+let multiverseState = {
+    Farming: 85,
+    Smithing: 99,
+    Alchemy: 72,
+    Combat: 64,
+    Merchanting: 45,
+    Optimization: 90
+};
 
 const capabilities = [
-  { name: 'Data Mining', level: multiverseState.DataMining || 85, xp: '12.5M', icon: '🔍' },
-  { name: 'Automation', level: multiverseState.Automation || 99, xp: '13.1M', icon: '⚡' },
-  { name: 'Infrastructure', level: multiverseState.Infrastructure || 72, xp: '8.2M', icon: '🏗️' },
-  { name: 'Lead Gen', level: multiverseState.LeadGen || 64, xp: '5.9M', icon: '🎯' },
-  { name: 'Optimization', level: multiverseState.Optimization || 45, xp: '3.1M', icon: '📈' },
-  { name: 'Security', level: multiverseState.Security || 90, xp: '12.1M', icon: '🛡️' },
+  { name: 'Farming', level: multiverseState.Farming, xp: '12.5M', icon: '🌾', color: 'green' as const },
+  { name: 'Smithing', level: multiverseState.Smithing, xp: '13.1M', icon: '⚒️', color: 'magenta' as const },
+  { name: 'Alchemy', level: multiverseState.Alchemy, xp: '8.2M', icon: '🧪', color: 'cyan' as const },
+  { name: 'Combat', level: multiverseState.Combat, xp: '5.9M', icon: '⚔️', color: 'magenta' as const },
+  { name: 'Merchanting', level: multiverseState.Merchanting, xp: '3.1M', icon: '💰', color: 'cyan' as const },
+  { name: 'Optimization', level: multiverseState.Optimization, xp: '12.1M', icon: '📈', color: 'green' as const },
 ];
 ---
 
-<Layout title="Multiversal Agentic Swarm | Command Center">
-	<main class="min-h-screen bg-[#050505] text-white p-4 md:p-8 font-mono selection:bg-blue-500/30">
-		<!-- Glow Effects -->
-		<div class="fixed top-0 left-0 w-full h-full pointer-events-none">
-			<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-900/20 blur-[120px] rounded-full"></div>
-			<div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-900/10 blur-[120px] rounded-full"></div>
-		</div>
-
-		<header class="relative mb-12 flex flex-col md:flex-row justify-between items-start md:items-center border-b border-white/5 pb-8">
+<Layout title="MAS Protocol | Vanguard Dashboard">
+	<main class="min-h-screen p-4 md:p-8 relative">
+		<header class="relative mb-12 flex flex-col md:flex-row justify-between items-start md:items-center border-b border-magenta-500/10 pb-8">
 			<div>
 				<div class="flex items-center space-x-2 mb-2">
-					<span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-					<span class="text-[10px] text-green-500 font-bold tracking-[0.3em] uppercase">System Operational</span>
+					<span class="w-2 h-2 bg-orange-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(255,69,0,0.8)]"></span>
+					<span class="text-[10px] text-orange-400 font-black tracking-[0.5em] uppercase">Mythic Skin Active: Phoenix</span>
 				</div>
-				<h1 class="text-5xl font-black tracking-tighter italic">
-					MULTIVERSAL <span class="text-blue-600 italic">SWARM</span>
+				<h1 class="text-6xl font-black tracking-tighter italic text-white drop-shadow-[0_0_20px_rgba(255,69,0,0.3)]">
+					MAS <span class="text-orange-500 italic">PHOENIX</span>
 				</h1>
 			</div>
 			<div class="mt-4 md:mt-0 text-right">
-				<p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Protocol: Ultra-Brain v1.0</p>
-				<p class="text-2xl font-bold text-white/90">0.00042s <span class="text-gray-600 text-sm">LATENCY</span></p>
+				<p class="text-[10px] text-magenta-500 font-bold uppercase tracking-[0.3em]">Protocol: Ultra-Brain v2.0</p>
+				<p class="text-3xl font-black text-cyan-400 italic">0.00021s <span class="text-white/20 text-sm not-italic">LATENCY</span></p>
 			</div>
 		</header>
 
@@ -72,58 +65,64 @@ const capabilities = [
 
 		<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative">
 			<div class="lg:col-span-2 space-y-8">
-				<section class="bg-white/[0.02] border border-white/5 p-8 rounded-3xl backdrop-blur-xl">
-					<h2 class="text-2xl font-bold mb-6 flex items-center italic">
-						<span class="text-blue-500 mr-3">//</span> ACTIVE DEPLOYMENTS
+				<section class="bg-black/60 border border-magenta-500/20 p-8 rounded-3xl backdrop-blur-xl shadow-[0_0_30px_rgba(255,0,255,0.05)]">
+					<h2 class="text-2xl font-black mb-6 flex items-center italic text-magenta-400">
+						<span class="text-cyan-500 mr-3">//</span> ACTIVE EPIC QUESTS
 					</h2>
-					<div class="space-y-6">
+					<div class="space-y-8">
 						<div class="group cursor-pointer">
-							<div class="flex justify-between mb-2">
-								<span class="text-sm font-bold text-gray-300">Quest: Regional Market Dominance</span>
-								<span class="text-xs text-blue-500 font-bold">84%</span>
+							<div class="flex justify-between mb-3 items-end">
+								<div>
+									<span class="text-[10px] text-cyan-500 font-bold uppercase block mb-1">Farming Objective</span>
+									<span class="text-sm font-black text-white italic tracking-widest uppercase">The Great May Harvest</span>
+								</div>
+								<span class="text-xl text-cyan-400 font-black italic">88%</span>
 							</div>
-							<div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
-								<div class="bg-blue-600 w-[84%] h-full group-hover:bg-blue-400 transition-all"></div>
+							<div class="w-full bg-black/50 h-2 rounded-full overflow-hidden border border-white/5">
+								<div class="bg-gradient-to-r from-cyan-600 to-blue-400 w-[88%] h-full group-hover:from-cyan-400 group-hover:to-blue-300 transition-all shadow-[0_0_15px_rgba(0,255,255,0.5)]"></div>
 							</div>
 						</div>
-						<div class="group cursor-pointer opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all">
-							<div class="flex justify-between mb-2">
-								<span class="text-sm font-bold text-gray-300">Quest: High-Ticket Lead Factory</span>
-								<span class="text-xs text-purple-500 font-bold">LOCKED</span>
+						<div class="group cursor-pointer opacity-40 grayscale hover:opacity-100 hover:grayscale-0 transition-all">
+							<div class="flex justify-between mb-3 items-end">
+								<div>
+									<span class="text-[10px] text-magenta-500 font-bold uppercase block mb-1">Smithing Objective</span>
+									<span class="text-sm font-black text-white italic tracking-widest uppercase">Infrastructure Forge</span>
+								</div>
+								<span class="text-xl text-magenta-500 font-black italic">LOCKED</span>
 							</div>
-							<div class="w-full bg-white/5 h-1 rounded-full"></div>
+							<div class="w-full bg-black/50 h-2 rounded-full border border-white/5"></div>
 						</div>
 					</div>
 				</section>
 
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-					<div class="bg-blue-600 p-8 rounded-3xl group cursor-pointer hover:bg-blue-500 transition-colors">
-						<h3 class="text-xs font-bold uppercase tracking-widest mb-4 text-blue-200">Total Revenue Managed</h3>
-						<p class="text-4xl font-black italic">$2.4M+</p>
-						<span class="text-[10px] font-bold text-blue-200 mt-2 block">↑ 12% FROM LAST CYCLE</span>
+					<div class="bg-magenta-600/90 p-8 rounded-3xl group cursor-pointer hover:bg-magenta-500 transition-all shadow-[0_0_20px_rgba(255,0,255,0.2)] border border-white/10">
+						<h3 class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-magenta-100">Merchanting Revenue</h3>
+						<p class="text-5xl font-black italic text-white tracking-tighter">$2.4M+</p>
+						<span class="text-[10px] font-bold text-magenta-200 mt-2 block animate-pulse">↑ 12% FROM LAST CYCLE</span>
 					</div>
-					<div class="bg-white/[0.02] border border-white/5 p-8 rounded-3xl">
-						<h3 class="text-xs font-bold uppercase tracking-widest mb-4 text-gray-500">Agent Efficiency</h3>
-						<p class="text-4xl font-black italic">99.9<span class="text-sm text-gray-600">%</span></p>
-						<span class="text-[10px] font-bold text-green-500 mt-2 block">OPTIMAL PERFORMANCE</span>
+					<div class="bg-black/40 border border-cyan-500/20 p-8 rounded-3xl backdrop-blur-md">
+						<h3 class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-cyan-700">Core Stability</h3>
+						<p class="text-5xl font-black italic text-cyan-400">99.9<span class="text-sm text-cyan-900">%</span></p>
+						<span class="text-[10px] font-bold text-green-500 mt-2 block uppercase tracking-widest">Optimal Sync</span>
 					</div>
 				</div>
 			</div>
 
 			<div class="space-y-6">
 				<NeuralTerminal />
-				<div class="bg-gradient-to-br from-gray-900 to-black border border-white/5 p-6 rounded-3xl">
-					<h3 class="text-sm font-bold mb-4 uppercase tracking-tighter text-gray-400">Architect Message</h3>
-					<p class="text-xs leading-relaxed text-gray-500 italic">
-						"The multiverse is not just a structure, it's an organism. Each agent is a cell, each universe is a lung. We don't just automate; we breathe scale."
+				<div class="bg-gradient-to-br from-black to-[#0a0a0a] border border-magenta-500/20 p-8 rounded-3xl shadow-inner">
+					<h3 class="text-[10px] font-black mb-4 uppercase tracking-[0.4em] text-magenta-900 italic">Architect Directives</h3>
+					<p class="text-xs leading-relaxed text-white/40 italic font-light">
+						"The vanguard doesn't just automate; it transcends. Every data point harvested is a step towards multiversal dominance."
 					</p>
 				</div>
 			</div>
 		</div>
 
-		<footer class="mt-20 border-t border-white/5 pt-8 flex justify-between items-center text-[10px] text-gray-600 font-bold uppercase tracking-[0.4em]">
-			<span>© 2026 Multiversal Swarm</span>
-			<span>Designed for High-Ticket Scaling</span>
+		<footer class="mt-20 border-t border-white/5 pt-8 flex justify-between items-center text-[8px] text-white/20 font-black uppercase tracking-[0.5em]">
+			<span>© 2026 MAS VANGUARD PROTOCOL</span>
+			<span>Encrypted by Neural Crypt v2.0</span>
 		</footer>
 	</main>
 </Layout>
