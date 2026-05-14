@@ -2,6 +2,7 @@ use wasm_bindgen::prelude::*;
 use serde::{Serialize, Deserialize};
 use dashmap::DashMap;
 use std::sync::Arc;
+use std::fs;
 use aes_gcm::{
     aead::{Aead, KeyInit},
     Aes256Gcm, Nonce
@@ -255,12 +256,22 @@ impl UltraBrain {
 pub struct NeuralCrypt;
 
 impl NeuralCrypt {
+    fn get_device_fingerprint() -> String {
+        // Obtenemos un identificador único basado en el sistema
+        let hw_id = fs::read_to_string("/proc/sys/kernel/random/boot_id")
+            .unwrap_or_else(|_| "fallback-hw-id".to_string());
+        hw_id.trim().to_string()
+    }
+
     pub fn encrypt(data: &[u8], password: &str) -> anyhow::Result<Vec<u8>> {
+        let hw_id = Self::get_device_fingerprint();
+        let binding_key = format!("{}:{}", password, hw_id);
+        
         let mut salt = [0u8; 16];
         rng().fill_bytes(&mut salt);
         
         let mut key = [0u8; 32];
-        pbkdf2_hmac::<Sha256>(password.as_bytes(), &salt, 100_000, &mut key);
+        pbkdf2_hmac::<Sha256>(binding_key.as_bytes(), &salt, 100_000, &mut key);
         
         let cipher = Aes256Gcm::new_from_slice(&key)
             .map_err(|e| anyhow::anyhow!("Cipher creation failed: {}", e))?;
@@ -285,11 +296,14 @@ impl NeuralCrypt {
             anyhow::bail!("Invalid encrypted data format");
         }
         
+        let hw_id = Self::get_device_fingerprint();
+        let binding_key = format!("{}:{}", password, hw_id);
+
         let (salt, rest) = encrypted_data.split_at(16);
         let (nonce_bytes, ciphertext) = rest.split_at(12);
         
         let mut key = [0u8; 32];
-        pbkdf2_hmac::<Sha256>(password.as_bytes(), salt, 100_000, &mut key);
+        pbkdf2_hmac::<Sha256>(binding_key.as_bytes(), salt, 100_000, &mut key);
         
         let cipher = Aes256Gcm::new_from_slice(&key)
             .map_err(|e| anyhow::anyhow!("Cipher creation failed: {}", e))?;

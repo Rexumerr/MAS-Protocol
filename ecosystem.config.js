@@ -31,6 +31,16 @@ module.exports = {
       env: {
         NODE_ENV: "production"
       }
+    },
+    {
+      name: "sync-orchestrator",
+      script: "python3",
+      args: "scripts/sync-orchestrator.py",
+      autorestart: true,
+      watch: false,
+      env: {
+        NODE_ENV: "production"
+      }
     }
   ]
 };
