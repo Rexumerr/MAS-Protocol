@@ -31,6 +31,9 @@ The protocol is structured as a **Hierarchical Swarm** where every business enti
 
 ## 🚀 Vanguard Technical Highlights (Revision 2026)
 
+- **Proactive Neural Governor:** A hardware-aware kernel that predicts resource exhaustion and thermal spikes (>45°C), taking pre-emptive actions like *Early Sharding* and *Predictive Throttling*.
+- **PM2 Orchestration:** Industrial-grade process management for all MAS services, ensuring infinite stability and auto-scaling.
+- **Chaos Engineering Suite:** Rigorous stress-testing protocol (`chaos-monkey.py`) to verify system resilience against OOM, thermal events, and security breaches.
 - **Rust 2024 Kernel:** Utilizing the absolute cutting edge of memory safety and zero-cost abstractions.
 - **Project Phoenix (Grade S):** Our first Mythic-tier asset and AI-Architect module.
     - **Mythic Phoenix Skin:** High-fidelity 3D fire-translucent visual with procedural thunder sparks.
@@ -48,19 +51,28 @@ The protocol is structured as a **Hierarchical Swarm** where every business enti
 - **Rust & Cargo:** (2024 Edition / Rust 1.85+)
 - **Node.js:** v22+ (2026 LTS recommended)
 - **pnpm:** (Mandatory for workspace management)
+- **Python 3:** (For Chaos Engineering and Diagnostics)
 
 ### Quick Start
 ```bash
 # Clone the vanguard repository
 git clone https://github.com/Rexumerr/MAS-Protocol.git
 
-# Install dependencies
+# Install dependencies and setup environment
 pnpm install
+./VANGUARD_BOOT.sh
 
-# Build the encrypted Rust core
-cd packages/core-rs
-cargo build --release
+# Monitor Proactive Health
+./packages/vanguard-os/target/release/vanguard-os monitor
+
+# Run Chaos Stress Tests
+python3 scripts/chaos-monkey.py
+
+# Manage Services with PM2
+pm2 status
+pm2 monit
 ```
+
 
 ## 🗺️ Strategic Roadmap: The Path to Singularity
 

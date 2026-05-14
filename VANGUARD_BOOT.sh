@@ -22,6 +22,9 @@ PHOENIX_BIN="./packages/core-rs/target/release/phoenix-dev"
 # Boot Sequence
 echo -e "\e[1;33m[*] Initializing Neural Crypt persistence...\e[0m"
 sleep 1
+echo -e "\e[1;33m[*] Starting Code-Server (VS-Code) in background...\e[0m"
+proot-distro login ubuntu -- bash -c "code-server --bind-addr 0.0.0.0:8080 --auth password > /dev/null 2>&1 &"
+sleep 2
 echo -e "\e[1;33m[*] Starting Vanguard OS Orchestrator...\e[0m"
 sleep 1
 

@@ -16,9 +16,14 @@
         <p class="text-magenta-400">> Swarm: Harvesting RawData in Sector_7... (Farming XP++)</p>
         <p class="text-green-400">> Smithing: Forging automation_bot... 45% complete.</p>
     </div>
-    <div class="px-4 py-2 bg-magenta-900/10 border-t border-magenta-500/20 flex items-center">
-        <span class="text-magenta-500 mr-2">$</span>
-        <input type="text" class="bg-transparent border-none outline-none text-cyan-400 w-full text-[10px] placeholder:text-cyan-900" placeholder="Execute vanguard command (e.g. 'forge --all')..." />
+    <div class="px-4 py-2 bg-magenta-900/10 border-t border-magenta-500/20 flex items-center justify-between">
+        <div class="flex items-center">
+            <span class="text-magenta-500 mr-2">$</span>
+            <input type="text" class="bg-transparent border-none outline-none text-cyan-400 w-full text-[10px] placeholder:text-cyan-900" placeholder="Execute vanguard command (e.g. 'forge --all')..." />
+        </div>
+        <div id="thermal-alert" class="hidden flex items-center gap-1 px-2 py-0.5 bg-red-900/40 border border-red-500/50 rounded-full animate-bounce">
+            <span class="text-[8px] font-mono text-red-400 whitespace-nowrap">❄️ COOLING ACTIVE</span>
+        </div>
     </div>
 </div>
 
@@ -35,6 +40,7 @@
     ];
 
     const container = document.getElementById('terminal-logs');
+    const thermalAlert = document.getElementById('thermal-alert');
     let i = 0;
 
     setInterval(() => {
@@ -47,5 +53,12 @@
         container.appendChild(p);
         container.scrollTop = container.scrollHeight;
         i++;
+
+        // Simulación de detección proactiva de enfriamiento para QA visual
+        if (Math.random() > 0.85) {
+            thermalAlert?.classList.remove('hidden');
+        } else {
+            thermalAlert?.classList.add('hidden');
+        }
     }, 2500);
 </script>
