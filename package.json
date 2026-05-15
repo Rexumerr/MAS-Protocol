@@ -2,6 +2,7 @@
   "name": "multiversal-agentic-swarm",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@9.1.0",
   "workspaces": [
     "apps/*",
     "packages/*"
