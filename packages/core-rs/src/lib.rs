@@ -11,22 +11,22 @@ use pbkdf2::pbkdf2_hmac;
 use sha2::Sha256;
 use rand::{RngCore, rng};
 
-// --- THE HERMETIC KERNEL: KYBALION INTEGRATION ---
+// --- THE KYBALION UNIVERSE: HERMETIC DICTIONARY ---
 
 #[wasm_bindgen]
-#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum HermeticPrinciple {
-    Mentalism,    // The All is Mind; The Universe is Mental.
-    Correspondence, // As above, so below; as below, so above.
-    Vibration,    // Nothing rests; everything moves; everything vibrates.
-    Polarity,     // Everything is dual; everything has poles.
-    Rhythm,       // Everything flows, out and in; everything has its tides.
-    CauseEffect,  // Every Cause has its Effect; every Effect has its Cause.
-    Gender,       // Gender is in everything; everything has its Masculine and Feminine.
+    Mentalism,
+    Correspondence,
+    Vibration,
+    Polarity,
+    Rhythm,
+    CauseEffect,
+    Gender,
 }
 
 impl HermeticPrinciple {
-    pub fn get_axiom(&self) -> &str {
+    pub fn get_axiom(self) -> &'static str {
         match self {
             HermeticPrinciple::Mentalism => "The All is Mind; the Universe is Mental.",
             HermeticPrinciple::Correspondence => "As above, so below; as below, so above.",
@@ -38,6 +38,15 @@ impl HermeticPrinciple {
         }
     }
 }
+
+pub struct KybalionUniverse;
+
+impl KybalionUniverse {
+    pub fn consult(principle: HermeticPrinciple) -> &'static str {
+        principle.get_axiom()
+    }
+}
+
 
 // --- THE ENTERPRISE RPG KERNEL ---
 
@@ -214,9 +223,23 @@ impl PhoenixArchitect {
             }))
             .send()
             .await?;
-        
+
         let json: serde_json::Value = res.json().await?;
         Ok(json["response"].as_str().unwrap_or("").to_string())
+    }
+
+    pub async fn hermetic_reasoning(&self, prompt: &str, principle: HermeticPrinciple) -> anyhow::Result<String> {
+        let axiom = principle.get_axiom();
+        let hermetic_prompt = format!(
+            "You are a MAS-Protocol Phoenix Architect. Acting under the Hermetic Law of {:?}, which states: '{}'.\n\
+            Analyze the following request and provide a response aligned with this universal law:\n\n{}",
+            principle,
+            axiom,
+            prompt
+        );
+
+        println!("[📜] Applying Hermetic Law: {:?}...", principle);
+        self.ask_ollama(&hermetic_prompt).await
     }
 
     pub async fn ask_openrouter(&self, prompt: &str) -> anyhow::Result<String> {
