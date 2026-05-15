@@ -28,5 +28,9 @@ sleep 2
 echo -e "\e[1;33m[*] Starting Vanguard OS Orchestrator...\e[0m"
 sleep 1
 
+# --- APEX SECURITY AUTO-HANDSHAKE (ZERO-TOUCH) ---
+echo -e "\e[1;36m[*] Synchronizing Multiversal Secrets...\e[0m"
+python3 scripts/apex-setup.py
+
 # Launching Monitor in foreground
 $VANGUARD_BIN monitor
