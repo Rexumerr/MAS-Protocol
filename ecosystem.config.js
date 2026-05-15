@@ -41,6 +41,15 @@ module.exports = {
       env: {
         NODE_ENV: "production"
       }
+    },
+    {
+      name: "mas-sentinel",
+      script: "./packages/vanguard-os/target/release/sentinel",
+      interpreter: "none",
+      autorestart: true,
+      env: {
+        NODE_ENV: "production"
+      }
     }
   ]
 };

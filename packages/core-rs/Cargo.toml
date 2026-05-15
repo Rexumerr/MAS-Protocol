@@ -15,6 +15,10 @@ name = "brain-cli"
 path = "src/main.rs"
 
 [[bin]]
+name = "handshake"
+path = "src/handshake.rs"
+
+[[bin]]
 name = "phoenix-dev"
 path = "src/bin/phoenix_dev.rs"
 
@@ -37,4 +41,5 @@ rand = "0.9"
 getrandom = "0.3"
 tokio = { version = "1.40", features = ["full"] }
 reqwest = { version = "0.12", features = ["json", "rustls-tls"] }
+colored = "3.1.1"
 

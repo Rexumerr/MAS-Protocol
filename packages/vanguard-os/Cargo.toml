@@ -3,6 +3,14 @@ name = "vanguard-os"
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+name = "vanguard-os"
+path = "src/main.rs"
+
+[[bin]]
+name = "sentinel"
+path = "src/sentinel.rs"
+
 [dependencies]
 tokio = { version = "1.40", features = ["full"] }
 sysinfo = "0.33"
@@ -12,4 +20,4 @@ anyhow = "1.0"
 clap = { version = "4.5", features = ["derive"] }
 chrono = "0.4"
 colored = "3.0"
-indicatif = "0.17" # Progress bars for 7-zip ops
+indicatif = "0.17"

@@ -1,32 +1,45 @@
 # --- ELITE MASTER GITIGNORE (MAS-PROTOCOL) ---
+# DO NOT REMOVE - ARCHITECT SIGNATURE REQUIRED
 
-# [RUST]
-/packages/core-rs/target/
-**/*.rs.bk
+# Kernel Private State
+*.journal
+*.bin
+multiverse-state.json
+health-status.json
+state.json
+
+# Hardware Fingerprints & Logs
+/outbox/
+/logs/
+.pm2/
+.pnpm-store/
+
+# Rust / OS Binaries
+target/
+**/*.pdb
+**/*.exe
+**/*.so
+**/*.apk
 Cargo.lock
 
-# [NODE / JS]
-node_modules/
-.npm/
-.turbo/
-dist/
-.env
-.env.*
-.DS_Store
-*.log
-debug_report.log
+# Environment & Keys
+.env*
+REXUMER_KEY
+ORACLE_TOKEN
+*.pem
+*.key
 
-# [ANDROID / CAPACITOR]
+# System Garbage
+node_modules/
+.DS_Store
+.astro/
+dist/
+.turbo/
+.npm/
+.cache/
+.vscode/
+
+# Android Specifics
 android/app/build/
 android/.gradle/
 android/local.properties
-android/captures/
-android/app/src/main/assets/public/
-android/app/src/main/assets/capacitor.config.json
-capacitor.config.json
-
-# [TEMPORARY / CACHE]
-.astro/
-.cache/
-.vscode/
-/data/data/com.termux/files/home/.npm/

@@ -1,0 +1,19 @@
+2026-05-12 14:58:30 - Checking environment prerequisites...
+2026-05-12 14:58:30 - Environment OK.
+2026-05-12 14:58:30 - Simulating 'sync-and-deploy' job...
+2026-05-12 14:58:30 - Step 1: Compiling Rust Core...
+2026-05-12 14:58:31 - Step 2: Running Sync Metrics...
+2026-05-12 14:58:39 - Step 3: Building Dashboard...
+2026-05-12 14:58:40 - FAILED: Astro build. Error: 
+***
+
+Turborepo failed to start.
+
+Turborepo detected that you are running:
+android arm64
+
+Turborepo does not presently support your platform.
+
+
+--- ENDPOINT VALIDATION ---
+HTTP/2 200 

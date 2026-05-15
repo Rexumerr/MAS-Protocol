@@ -1,93 +1,50 @@
-# 🌌 MAS Protocol: Multiversal Agentic Swarm
+# 🌌 MAS-PROTOCOL (Exclusive Beta: Phase 0)
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Rust](https://img.shields.io/badge/Kernel-Rust_2024_Edition-orange.svg)](https://www.rust-lang.org/)
-[![Vanguard](https://img.shields.io/badge/Revision-2026.05.13-gold.svg)](./NEURAL_STRATEGY.md)
-[![WASM](https://img.shields.io/badge/Interface-WASM_Cutting_Edge-green.svg)](https://webassembly.org/)
+> **"Absolute Sovereignty. Invisible Infrastructure. Apex Performance."**
 
-**MAS Protocol** is a vanguard, high-performance orchestration ecosystem designed for autonomous, industrial-scale business scaling. Built on the **Rust 2024 Edition**, it utilizes a hierarchical actor model to govern intelligent swarms across isolated multiversal dimensions.
+## ⛓️ The Rexumer Signature (Developer-Locked)
 
-> "Maximum efficiency, zero compromise. The architecture of the 2026 global economy."
+**MAS-Protocol** is a high-performance decentralized orchestration layer built on a **Rust-Kernel** with native **FLUX** settlement integration. During the current **Phase 0**, the protocol is under **Developer-Lock**. Access to node orchestration, agentic settlement, and the full "Power of the Hive" is exclusively gated by the **Rexumer Master Signature**.
 
----
+### 🛠️ Core Architectural Pillars
 
-## 📽️ Interactive Visuals & Demos
+### 1. Rust Stateless Engine (Wasm)
+A zero-overhead, stateless execution environment designed for "On-the-Edge" deployment. The engine incorporates a mandatory **Handshake Gate** that validates the developer’s cryptographic signature before initializing any multiversal services.
 
-### ⚡ Neural Reactor Live Preview
-*(Próximamente: Integración de video interactivo/Asciinema aquí)*
-Visualice el crecimiento de su enjambre en tiempo real. Observe cómo los niveles de **Optimization**, **LeadGen** y **Security** escalan dinámicamente según la ingesta de datos del mundo real.
+### 2. FLUX Settlement Integration
+State consistency and settlement are anchored on the **FLUX Network**, providing a secure, decentralized ledger for agentic resource allocation and business-state persistence.
 
----
+### 3. The Invisible Node Concept
+Infrastructure that lives where you do. By utilizing **Hardware Binding** and **Master-Signature Validation**, MAS-Protocol nodes operate silently on local hardware, invisible to unauthorized actors, yet part of a global, elite swarm.
 
-## 🏗️ Architecture: The 2026 Vanguard Core
-
-The protocol is structured as a **Hierarchical Swarm** where every business entity exists within its own encrypted logical universe, governed by the **Ultra-Brain** kernel.
-
-### Key Dimensions
-- **Dimension 0 (The Overmind):** Global orchestration and 2026-grade security monitoring.
-- **Dimension 1 (Architect Agents):** Strategic planners using the Vanguard reasoning engine.
-- **Dimension 2 (Worker Swarm):** Specialized units for Data Mining, Automation, Lead Gen, and Security.
-- **Neural Crypt Bridge:** Military-grade AES-GCM encrypted interface for real-world API metrics.
-
-## 🚀 Vanguard Technical Highlights (Revision 2026)
-
-- **Proactive Neural Governor:** A hardware-aware kernel that predicts resource exhaustion and thermal spikes (>45°C), taking pre-emptive actions like *Early Sharding* and *Predictive Throttling*.
-- **PM2 Orchestration:** Industrial-grade process management for all MAS services, ensuring infinite stability and auto-scaling.
-- **Chaos Engineering Suite:** Rigorous stress-testing protocol (`chaos-monkey.py`) to verify system resilience against OOM, thermal events, and security breaches.
-- **Rust 2024 Kernel:** Utilizing the absolute cutting edge of memory safety and zero-cost abstractions.
-- **Project Phoenix (Grade S):** Our first Mythic-tier asset and AI-Architect module.
-    - **Mythic Phoenix Skin:** High-fidelity 3D fire-translucent visual with procedural thunder sparks.
-    - **PhoenixDev AI Tool:** A Grade S developer tool running in Ubuntu proot, powered by Ollama and Open Router for Rust auditing and manifestation.
-    - **Grade S Buffs:** +50% Alchemy Efficiency and +25% Smithing Speed when active.
-- **Vanguard RPG Meta-Layer:** A non-linear business progression system inspired by MMORPGs.
-- **Neural Cryptography:** Every state transition (including RPG levels and inventory) is protected by AES-GCM 256-bit encryption.
-- **Persistent Avatar & Inventory:** Every agent instance is a unique **Vanguard Avatar** with its own secure inventory of materials like `RawData`.
-- **Industrial-Grade Concurrency:** Powered by `DashMap 6.0` and `Tokio 1.40+` for sub-millisecond orchestration.
-- **Zero-Trust Oracle:** Mandatory token validation for all real-world event ingestions (XP and material rewards).
-
-## 🛠️ Installation & Operation
-
-### Prerequisites
-- **Rust & Cargo:** (2024 Edition / Rust 1.85+)
-- **Node.js:** v22+ (2026 LTS recommended)
-- **pnpm:** (Mandatory for workspace management)
-- **Python 3:** (For Chaos Engineering and Diagnostics)
-
-### Quick Start
-```bash
-# Clone the vanguard repository
-git clone https://github.com/Rexumerr/MAS-Protocol.git
-
-# Install dependencies and setup environment
-pnpm install
-./VANGUARD_BOOT.sh
-
-# Monitor Proactive Health
-./packages/vanguard-os/target/release/vanguard-os monitor
-
-# Run Chaos Stress Tests
-python3 scripts/chaos-monkey.py
-
-# Manage Services with PM2
-pm2 status
-pm2 monit
-```
-
-
-## 🗺️ Strategic Roadmap: The Path to Singularity
-
-- [x] **Vanguard Revision (May 2026):** Security hardening, Rust 2024 upgrade, and Encrypted Persistence.
-- [ ] **Phase 4:** Multi-LLM Orchestration Layer (Scheduled Q3 2026).
-- [ ] **Phase 5:** Mobile Neural Interface & AR Swarm Visualization.
-
-## 🤝 Elite Contribution
-
-We only accept excellence. If you are a senior systems engineer or a strategic architect, read our [CONTRIBUTING.md](./CONTRIBUTING.md).
+### 4. Sovereign Identity (WebAuthn)
+Absolute user security via **Biometric Passkeys**. The protocol leverages local hardware security modules (HSM) to ensure that the user’s identity is unforgeable and tied to physical presence.
 
 ---
 
-## 📞 Strategic Integration
+## 🗺️ Architectural Roadmap
 
-For high-ticket enterprise integration and custom vanguard agent development, contact the **Architect of Realities**.
+### Phase 0: Private Kernel (Current)
+- Implementation of the **Rust Core** with active **Developer-Lock**.
+- Internal stress-testing of the **Invisible Node** architecture.
+- Finalization of the **Neural Crypt** AES-GCM 256-bit persistence layer.
 
-*Licensed under the Apache License, Version 2.0. (c) 2026 MAS-Protocol.*
+### Phase 1: The Handshake
+- Exclusive Beta Testing for authorized nodes only.
+- Manual issuance of **Authorized Node Signatures** by Rexumer.
+- Initial **FLUX** settlement testing in sandboxed environments.
+
+### Phase 2: The Opening
+- Gradual decentralization of the orchestration suite.
+- Public agent deployment and "Mass Swarm" orchestration.
+- Integration of the **Mobile Neural Interface (APK)** for global edge-sovereignty.
+
+---
+
+## 🛡️ Exclusivity & IP Protection
+
+This protocol is currently in a **Controlled Descent** phase. Centralization at this stage is a strategic choice to ensure that the architecture reaches its **Apex Performance** profile without the interference of unauthorized forks or unoptimized nodes.
+
+**UNAUTHORIZED ACCESS IS CRYPTOGRAPHICALLY IMPOSSIBLE.**
+
+*Licensed under the Rexumer Elite Protocol (c) 2026. Authorized by the Architect of Realities.*
