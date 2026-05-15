@@ -19,7 +19,8 @@ module.exports = {
       cwd: "./apps/web",
       autorestart: true,
       env: {
-        PORT: 3000
+        PORT: 3000,
+        ORACLE_TOKEN: process.env.ORACLE_TOKEN
       }
     },
     {
@@ -29,7 +30,8 @@ module.exports = {
       autorestart: false,
       cron_restart: "0 */12 * * *",
       env: {
-        NODE_ENV: "production"
+        NODE_ENV: "production",
+        ORACLE_TOKEN: process.env.ORACLE_TOKEN
       }
     },
     {
@@ -39,7 +41,8 @@ module.exports = {
       autorestart: true,
       watch: false,
       env: {
-        NODE_ENV: "production"
+        NODE_ENV: "production",
+        ORACLE_TOKEN: process.env.ORACLE_TOKEN
       }
     },
     {
@@ -48,7 +51,18 @@ module.exports = {
       interpreter: "none",
       autorestart: true,
       env: {
-        NODE_ENV: "production"
+        NODE_ENV: "production",
+        ORACLE_TOKEN: process.env.ORACLE_TOKEN
+      }
+    },
+    {
+      name: "power-leveling",
+      script: "python3",
+      args: "scripts/power-leveling.py",
+      autorestart: false,
+      env: {
+        NODE_ENV: "production",
+        ORACLE_TOKEN: process.env.ORACLE_TOKEN
       }
     }
   ]
