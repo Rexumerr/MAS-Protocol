@@ -2,10 +2,10 @@
 
 ## 🔴 HIGH PRIORITY (Critical / Blockers)
 - **ISSUE-001: CI/CD Pipeline Instability**
-  - *Status:* In Progress (Fix applied in `develop`)
+  - *Status:* Solved (Merged to `main`)
   - *Details:* Workflows failing with "No jobs were run" and trigger mismatches.
 - **ISSUE-002: Atomic State Corruption Risk**
-  - *Status:* Solved (WAL implemented, needs verification in production)
+  - *Status:* Solved (Merged to `main`)
   - *Details:* File contention during high-concurrency power-leveling.
 
 ## 🟡 MEDIUM PRIORITY (Features / Enhancements)
