@@ -58,6 +58,11 @@ enum Commands {
         #[arg(short, long, default_value = "state.bin")]
         state_path: String,
     },
+    /// Consult the Kybalion Universe (Hermetic Laws)
+    Consult {
+        #[arg(short, long)]
+        principle: Option<String>,
+    },
 }
 
 fn main() -> anyhow::Result<()> {
@@ -76,6 +81,39 @@ fn main() -> anyhow::Result<()> {
     let oracle = OracleBridge::new(required_token.clone());
 
     match cli.command {
+        Commands::Consult { principle } => {
+            use core_rs::HermeticPrinciple;
+            println!("{}", "--- CONSULTING THE KYBALION UNIVERSE ---".bold().magenta());
+            
+            if let Some(p) = principle {
+                let p_enum = match p.to_lowercase().as_str() {
+                    "mentalism" => HermeticPrinciple::Mentalism,
+                    "correspondence" => HermeticPrinciple::Correspondence,
+                    "vibration" => HermeticPrinciple::Vibration,
+                    "polarity" => HermeticPrinciple::Polarity,
+                    "rhythm" => HermeticPrinciple::Rhythm,
+                    "cause" => HermeticPrinciple::CauseEffect,
+                    "gender" => HermeticPrinciple::Gender,
+                    _ => {
+                        println!("Unknown principle. Available: Mentalism, Correspondence, Vibration, Polarity, Rhythm, Cause, Gender.");
+                        return Ok(());
+                    }
+                };
+                println!("{}: {}", format!("{:?}", p_enum).bold().cyan(), p_enum.get_axiom().yellow());
+            } else {
+                for p in [
+                    HermeticPrinciple::Mentalism,
+                    HermeticPrinciple::Correspondence,
+                    HermeticPrinciple::Vibration,
+                    HermeticPrinciple::Polarity,
+                    HermeticPrinciple::Rhythm,
+                    HermeticPrinciple::CauseEffect,
+                    HermeticPrinciple::Gender,
+                ] {
+                    println!("{}: {}", format!("{:?}", p).bold().cyan(), p.get_axiom().yellow());
+                }
+            }
+        }
         Commands::Ingest { event, value, state_path, token } => {
             let provided_token = token.unwrap_or_else(|| "".to_string());
             if !oracle.validate_token(&provided_token) {

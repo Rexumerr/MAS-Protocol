@@ -20,13 +20,24 @@ Infrastructure that lives where you do. By utilizing **Hardware Binding** and **
 ### 4. Sovereign Identity (WebAuthn)
 Absolute user security via **Biometric Passkeys**. The protocol leverages local hardware security modules (HSM) to ensure that the user’s identity is unforgeable and tied to physical presence.
 
+## 🌌 The Hermetic Universe: Kybalion Core
+
+The MAS-Protocol (v1.2+) incorporates a **Hermetic Decision Layer**. The kernel is infused with the seven principles of *The Kybalion*, acting as a philosophical "Universe" that agents consult to align with natural laws.
+
+### 🏛️ Hermetic Principles in Orchestration
+- **Mentalism:** The swarm is mind; orchestration is mental.
+- **Correspondence:** As above (Cloud), so below (Edge).
+- **Vibration/Polarity/Rhythm:** Adaptive resource balancing.
+- **Cause & Effect:** Atomic state consistency (WAL).
+
 ---
 
-## 🚀 Vanguard Technical Stack (Grade S)
-*   **Proactive Neural Governor (Rust):** A hardware-aware kernel that predicts resource exhaustion and thermal spikes (>45°C), taking pre-emptive actions like *Early Sharding* and *Predictive Throttling*.
-*   **Dual Sentinel System (Guardians):** Specialized background agents (`Guardian A` & `Guardian B`) that monitor network patterns and neutralize unauthorized intrusion attempts in real-time.
-*   **PM2 Orchestration:** Industrial-grade process management for all MAS services, ensuring infinite stability and auto-scaling.
-*   **Neural Crypt (AES-GCM 256):** Hardened persistence for the Vanguard RPG state and Multiversal metrics, now bound to hardware fingerprints.
+## 🚀 Vanguard Technical Stack (Apex Edition)
+- **CI/CD Health:** 🟢 **Stable & Green** (Java 21 / Node 22 / Rust 2024).
+- **Proactive Neural Governor:** Predicts and prevents hardware failure.
+- **Hardware-Bound Cryptography:** Chip-locked state sovereignty.
+- **Zero-Touch Setup:** Automated secret synchronization.
+- **Multitasking Async Kernel:** High-concurrency event ingestion (5k+ tasks).
 
 ---
 
@@ -49,10 +60,24 @@ Absolute user security via **Biometric Passkeys**. The protocol leverages local 
 
 ---
 
-## 🛡️ Exclusivity & IP Protection
+## 🌌 The Kybalion Universe (Hermetic Extension)
 
-This protocol is currently in a **Controlled Descent** phase. Centralization at this stage is a strategic choice to ensure that the architecture reaches its **Apex Performance** profile without the interference of unauthorized forks or unoptimized nodes.
+The MAS-Protocol now adopts the **Kybalion Module**, a queryable data-layer containing the seven hermetic principles. Agents and operators can consult this "Universe" to align orchestration strategies with universal laws.
 
-**UNAUTHORIZED ACCESS IS CRYPTOGRAPHICALLY IMPOSSIBLE.**
+### 🏛️ Interfacing with Hermetic Wisdom
+```bash
+# Consult all laws
+./packages/core-rs/target/release/brain-cli consult
 
-*Licensed under the Rexumer Elite Protocol (c) 2026. Authorized by the Architect of Realities.*
+# Consult a specific law
+./packages/core-rs/target/release/brain-cli consult --principle mentalism
+```
+
+---
+
+## 🚀 Vanguard Technical Stack (Apex Edition)
+- **Frontend Architecture:** **Astro 4.0+** with View Transitions for a seamless, low-latency "Neural UI".
+- **Agentic Infrastructure:** Rust-orchestrated kernels with asynchronous multitasking.
+- **Local-First AI:** Built-in hooks for **Ollama** integration (Local LLMs).
+- **CI/CD Health:** 🟢 **Stable & Green** (Java 21 / Node 22 / Rust 2024).
+- **Sovereignty:** Hardware-bound encryption and Zero-Touch setup.

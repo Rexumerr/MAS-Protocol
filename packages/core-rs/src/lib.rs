@@ -39,6 +39,42 @@ impl HermeticPrinciple {
     }
 }
 
+// --- THE KYBALION UNIVERSE: HERMETIC DICTIONARY ---
+
+#[wasm_bindgen]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum HermeticPrinciple {
+    Mentalism,
+    Correspondence,
+    Vibration,
+    Polarity,
+    Rhythm,
+    CauseEffect,
+    Gender,
+}
+
+impl HermeticPrinciple {
+    pub fn get_axiom(&self) -> &str {
+        match self {
+            HermeticPrinciple::Mentalism => "The All is Mind; the Universe is Mental.",
+            HermeticPrinciple::Correspondence => "As above, so below; as below, so above.",
+            HermeticPrinciple::Vibration => "Nothing rests; everything moves; everything vibrates.",
+            HermeticPrinciple::Polarity => "Everything is dual; everything has poles; everything has its pair of opposites.",
+            HermeticPrinciple::Rhythm => "Everything flows, out and in; everything has its tides; all things rise and fall.",
+            HermeticPrinciple::CauseEffect => "Every Cause has its Effect; every Effect has its Cause; everything happens according to Law.",
+            HermeticPrinciple::Gender => "Gender is in everything; everything has its Masculine and Feminine Principles.",
+        }
+    }
+}
+
+pub struct KybalionUniverse;
+
+impl KybalionUniverse {
+    pub fn consult(principle: HermeticPrinciple) -> &'static str {
+        principle.get_axiom()
+    }
+}
+
 // --- THE ENTERPRISE RPG KERNEL ---
 
 #[wasm_bindgen]
