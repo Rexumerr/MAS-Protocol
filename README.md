@@ -71,6 +71,9 @@ The MAS-Protocol now adopts the **Kybalion Module**, a queryable data-layer cont
 
 # Consult a specific law
 ./packages/core-rs/target/release/brain-cli consult --principle mentalism
+
+# Hermetic Reasoning with local AI (Ollama)
+./packages/core-rs/target/release/phoenix-dev think --prompt "How to optimize my swarm?" --principle cause
 ```
 
 ---

@@ -172,7 +172,7 @@ async fn main() -> anyhow::Result<()> {
                     (governor.sys.used_memory() as f64 / governor.sys.total_memory() as f64) * 100.0
                 );
                 
-                println!("\n{}", "NEURAL GOVERNOR PROACTIVE STRATEGY".bold().cyan());
+                println!("{}", "NEURAL GOVERNOR PROACTIVE STRATEGY".bold().cyan());
                 
                 match governor.mode {
                     ExecutionMode::Overclock => println!("Current Mode: {}", "OVERCLOCK".bold().magenta()),
@@ -181,6 +181,22 @@ async fn main() -> anyhow::Result<()> {
                     ExecutionMode::Critical => println!("Current Mode: {}", "CRITICAL".bold().red()),
                     ExecutionMode::Preemptive(_) => println!("Current Mode: {}", "PRE-EMPTIVE (PROACTIVE)".bold().blue()),
                 }
+                
+                // Check Ollama Status
+                let ollama_status = Command::new("curl")
+                    .arg("-s")
+                    .arg("-o")
+                    .arg("/dev/null")
+                    .arg("-w")
+                    .arg("%{http_code}")
+                    .arg("http://localhost:11434/api/tags")
+                    .output();
+                
+                let ai_status = match ollama_status {
+                    Ok(output) if String::from_utf8_lossy(&output.stdout).trim() == "200" => "ONLINE".green(),
+                    _ => "OFFLINE".red(),
+                };
+                println!("Local AI (Ollama): {}", ai_status);
                 
                 println!("Action:       {}", governor.get_optimization_tip());
                 println!("------------------------------------");
