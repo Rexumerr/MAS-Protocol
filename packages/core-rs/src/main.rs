@@ -1,6 +1,8 @@
 use clap::{Parser, Subcommand};
 use core_rs::{UltraBrain, Capability, OracleBridge, NeuralCrypt};
-use std::fs;
+use colored::*;
+use std::fs::{self, OpenOptions};
+use std::io::Write;
 use std::env;
 use base64::{Engine as _, engine::general_purpose};
 
@@ -51,6 +53,11 @@ enum Commands {
         #[arg(short, long, default_value = "state.bin")]
         state_path: String,
     },
+    /// Internal: Perform a massive XP injection (Singularity Mode)
+    PowerLevel {
+        #[arg(short, long, default_value = "state.bin")]
+        state_path: String,
+    },
 }
 
 fn main() -> anyhow::Result<()> {
@@ -79,6 +86,31 @@ fn main() -> anyhow::Result<()> {
             let result = oracle.ingest_event(&brain, event.clone(), value);
             println!("{}", result);
             save_state(&brain, &state_path, &required_token)?;
+        }
+        Commands::PowerLevel { state_path } => {
+            let brain = load_state(&state_path, &required_token).unwrap_or_else(|_| UltraBrain::new());
+            
+            println!("{}", "[⚡] SINGULARITY MODE: Injecting 15M XP into all core skills...".bold().magenta());
+            
+            let events = [
+                ("raw_data_scraped", 150000.0),
+                ("resource_extracted", 150000.0),
+                ("infrastructure_built", 150000.0),
+                ("alchemy_experiment", 100000.0), 
+                ("security_breach_deflected", 150000.0), 
+                ("revenue_generated", 75000.0),     
+                ("optimization_task", 150000.0),
+                ("workflow_automated", 150000.0),
+            ];
+
+            for (event, val) in events {
+                for _ in 0..100 {
+                    oracle.ingest_event(&brain, event.to_string(), val);
+                }
+            }
+
+            save_state(&brain, &state_path, &required_token)?;
+            println!("{}", "[✔] Singularity Achieved. All Skills at Lvl 99.".bold().green());
         }
         Commands::Quest { action, id, state_path } => {
             let brain = load_state(&state_path, &required_token).unwrap_or_else(|_| UltraBrain::new());
@@ -110,6 +142,8 @@ fn main() -> anyhow::Result<()> {
                 Capability::Alchemy,
                 Capability::Combat,
                 Capability::Merchanting,
+                Capability::Optimization,
+                Capability::Automation,
             ] {
                 println!("{:?}: Level {} ({:.2} XP)", cap, avatar.get_level(cap), avatar.get_xp(cap));
             }

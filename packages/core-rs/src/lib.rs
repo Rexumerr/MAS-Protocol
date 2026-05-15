@@ -342,24 +342,45 @@ impl OracleBridge {
         let avatar = brain.avatar();
         match event_type.as_str() {
             "raw_data_scraped" => {
-                let xp = value * 0.1;
+                let xp = value * 1.0; // Optimized for Speedrun
                 avatar.grant_xp(Capability::Farming, xp);
                 avatar.add_material("RawData".into(), value as u64);
                 format!("Oracle: Cosechados {} fragmentos de RawData. +{:.2} XP en Farming.", value, xp)
             },
             "infrastructure_built" => {
-                let xp = 500.0;
+                let xp = value * 1.0;
                 avatar.grant_xp(Capability::Smithing, xp);
-                "Oracle: Nueva infraestructura forjada. +500.00 XP en Smithing.".into()
+                format!("Oracle: Nueva infraestructura forjada. +{:.2} XP en Smithing.", xp)
             },
             "security_breach_deflected" => {
-                avatar.grant_xp(Capability::Combat, 1000.0);
-                "Oracle: Intrusión repelida con éxito. +1000.00 XP en Combat.".into()
+                let xp = value * 1.0;
+                avatar.grant_xp(Capability::Combat, xp);
+                format!("Oracle: Intrusión repelida con éxito. +{:.2} XP en Combat.", xp)
             },
             "revenue_generated" => {
                 let xp = value * 2.0;
                 avatar.grant_xp(Capability::Merchanting, xp);
                 format!("Oracle: Transacción de ${:.2} completada. +{:.2} XP en Merchanting.", value, xp)
+            },
+            "alchemy_experiment" => {
+                let xp = value * 1.5;
+                avatar.grant_xp(Capability::Alchemy, xp);
+                format!("Oracle: Experimento de alquimia exitoso. +{:.2} XP en Alchemy.", xp)
+            },
+            "optimization_task" => {
+                let xp = value * 1.0;
+                avatar.grant_xp(Capability::Optimization, xp);
+                format!("Oracle: Optimización de recursos completa. +{:.2} XP en Optimization.", xp)
+            },
+            "workflow_automated" => {
+                let xp = value * 1.0;
+                avatar.grant_xp(Capability::Automation, xp);
+                format!("Oracle: Flujo de trabajo automatizado. +{:.2} XP en Automation.", xp)
+            },
+            "resource_extracted" => {
+                let xp = value * 1.0;
+                avatar.grant_xp(Capability::Woodcutting, xp);
+                format!("Oracle: Recursos extraídos con éxito. +{:.2} XP en Woodcutting.", xp)
             },
             _ => "Oracle: Unknown event type.".into()
         }
