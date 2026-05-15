@@ -231,9 +231,9 @@ impl PhoenixArchitect {
     pub async fn hermetic_reasoning(&self, prompt: &str, principle: HermeticPrinciple) -> anyhow::Result<String> {
         let axiom = principle.get_axiom();
         let hermetic_prompt = format!(
-            "Acting under the Hermetic Law of {}, which states: '{}'.\n\
+            "You are a MAS-Protocol Phoenix Architect. Acting under the Hermetic Law of {:?}, which states: '{}'.\n\
             Analyze the following request and provide a response aligned with this universal law:\n\n{}",
-            format!("{:?}", principle),
+            principle,
             axiom,
             prompt
         );
@@ -241,6 +241,7 @@ impl PhoenixArchitect {
         println!("[📜] Applying Hermetic Law: {:?}...", principle);
         self.ask_ollama(&hermetic_prompt).await
     }
+
     pub async fn ask_openrouter(&self, prompt: &str) -> anyhow::Result<String> {
         let key = self.openrouter_key.as_ref()
             .ok_or_else(|| anyhow::anyhow!("OpenRouter key missing"))?;
