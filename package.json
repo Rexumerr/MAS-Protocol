@@ -1,6 +1,7 @@
 {
   "name": "multiversal-agentic-swarm",
   "private": true,
+  "type": "module",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -10,7 +11,7 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "sync": "ts-node scripts/sync-metrics.ts"
+    "sync": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' ts-node scripts/sync-metrics.ts"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
