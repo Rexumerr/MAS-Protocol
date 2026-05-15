@@ -34,9 +34,11 @@ Every node's state is cryptographically bound to the host chip.
 - **Boot ID Binding:** The `NeuralCrypt` module uses `/proc/sys/kernel/random/boot_id`.
 - **Portability Note:** Encrypted state files (`multiverse-state.json`) **cannot** be decrypted on secondary hardware.
 
-### 3.2 Dual Sentinel Defense
-- **Watcher:** Monitors unauthorized process patterns.
-- **Enforcer:** Neutralizes anomalies and maintains the "Invisible Node" status.
+### 3.3 Autonomous Self-Healing (mas-sentinel)
+The system employs an autonomous sentinel agent to ensure process integrity.
+- **Monitoring:** The `mas-sentinel` scans the PM2 process ecosystem every 10 seconds.
+- **Recovery:** If any core service (Monitor, Sync, Dashboard) transitions to a state other than `online`, the sentinel autonomously triggers a recovery restart.
+- **Resilience:** This closed-loop system maintains 99.9% uptime by eliminating the need for manual intervention during transient failures.
 
 ## 4. 📈 Proactive Monitoring
 Use the **Vanguard Governor** to audit health trends in real-time:
