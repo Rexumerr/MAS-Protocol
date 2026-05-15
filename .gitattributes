@@ -1,0 +1,18 @@
+# Force GitHub to recognize the project as Rust/TypeScript/Astro
+# Ignore non-essential paths for language statistics
+
+node_modules/* linguist-vendored
+dist/* linguist-vendored
+android/* linguist-vendored
+packages/core-rs/target/* linguist-vendored
+packages/vanguard-os/target/* linguist-vendored
+
+*.js linguist-detectable=false
+*.mjs linguist-detectable=false
+*.sh linguist-detectable=false
+*.py linguist-detectable=false
+
+# Prioritize Rust and Astro
+*.rs linguist-detectable=true
+*.astro linguist-detectable=true
+*.ts linguist-detectable=true

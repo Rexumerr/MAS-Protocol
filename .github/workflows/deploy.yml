@@ -2,9 +2,9 @@ name: 🌌 MAS-Protocol Deployment (Rexumer Exclusive)
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
   workflow_dispatch: # Manual execution for testing and Apex verification
 
 permissions:
@@ -22,6 +22,9 @@ jobs:
 
       - name: 🦀 Setup Rust (dtolnay/rust-toolchain)
         uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
 
       - name: 🏎️ Rust Cache
         uses: Swatinem/rust-cache@v2
@@ -42,16 +45,22 @@ jobs:
     name: 🔐 Security-Gate (Rexumer Environment)
     needs: build-check
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'Rexumerr'
+    # Only block deployment-related jobs, allow build-check to always run
     steps:
       - name: 🛡️ Audit Authorization
         run: |
           echo "[*] Initializing Rexumer Authority Audit..."
-          echo "[+] Environment Authorized: ACCESS GRANTED"
+          if [ "${{ github.repository_owner }}" == "Rexumerr" ]; then
+            echo "[+] Environment Authorized: ACCESS GRANTED"
+          else
+            echo "[!] Unauthorized Environment: ACCESS DENIED"
+            exit 1
+          fi
 
   sync-and-deploy:
     name: 🧬 Sync & Dashboard Deploy
     needs: security-gate
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout Code
@@ -66,6 +75,7 @@ jobs:
         uses: pnpm/action-setup@v3
         with:
           version: 9
+          run_install: false
 
       - name: 📦 Install Dependencies
         run: pnpm install
@@ -95,6 +105,7 @@ jobs:
   deploy-pages:
     name: 🚀 Finalize Pages Deploy
     needs: sync-and-deploy
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -105,6 +116,7 @@ jobs:
   build-apk:
     name: 🔨 Native APK Manifestation
     needs: security-gate
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout Code
