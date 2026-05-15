@@ -54,7 +54,7 @@ class MASStabilityAudit:
         os.remove("packages/core-rs/latency.test")
 
     async def run_stress_stability(self):
-        print("[*] AUDIT: Initiating 30-second concurrency stress test...")
+        print("[*] AUDIT: Initiating 60-second APEX concurrency stress test...")
         vitals_start = self.get_system_vitals()
         
         # Sellar fuga de entorno en el auditor
@@ -62,16 +62,18 @@ class MASStabilityAudit:
         if "ORACLE_TOKEN" not in env:
             env["ORACLE_TOKEN"] = "development-only-key"
 
-        # Ejecutar power-leveling en paralelo con entorno robusto
+        # Ejecutar power-leveling en modo APEX
         leveler = subprocess.Popen(["python3", "scripts/power-leveling.py"], stdout=subprocess.DEVNULL, env=env)
         
-        # Monitorear durante el stress
+        # Monitorear durante 60 segundos
         max_cpu = 0
         max_mem = 0
-        for _ in range(10):
+        for i in range(30):
             v = self.get_system_vitals()
             max_cpu = max(max_cpu, v["cpu"])
             max_mem = max(max_mem, v["mem_pct"])
+            if v["mem_pct"] > 90:
+                print(f"[⚠️] WARNING: Memory approaching Apex Limit: {v['mem_pct']}%")
             await asyncio.sleep(2)
             
         vitals_end = self.get_system_vitals()
