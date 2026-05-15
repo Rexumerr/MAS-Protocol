@@ -29,6 +29,9 @@ importers:
       astro:
         specifier: ^6.3.3
         version: 6.3.3(@types/node@25.8.0)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.60.4)(yaml@2.9.0)
+      capacitor-biometric-auth:
+        specifier: ^0.1.1
+        version: 0.1.1
       devalue:
         specifier: ^5.8.1
         version: 5.8.1
@@ -1217,6 +1220,9 @@ packages:
 
   caniuse-lite@1.0.30001792:
     resolution: {integrity: sha512-hVLMUZFgR4JJ6ACt1uEESvQN1/dBVqPAKY0hgrV70eN3391K6juAfTjKZLKvOMsx8PxA7gsY1/tLMMTcfFLLpw==}
+
+  capacitor-biometric-auth@0.1.1:
+    resolution: {integrity: sha512-LZnYs5nG7dW+dnGu4rI1WotFgsZJq5hwFO6Q6TNO/AZV4UFZDEGYg5e3Z6qUdnKUjVr/NRJfxdLWVt2em83KOA==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -3490,6 +3496,10 @@ snapshots:
   buffer-crc32@0.2.13: {}
 
   caniuse-lite@1.0.30001792: {}
+
+  capacitor-biometric-auth@0.1.1:
+    dependencies:
+      '@capacitor/core': 8.3.4
 
   ccount@2.0.1: {}
 

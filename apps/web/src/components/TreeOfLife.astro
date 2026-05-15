@@ -1,47 +1,83 @@
 ---
+const response = await fetch('http://localhost:8080/health-status.json').catch(() => ({}));
+const health = await response.json ? response.json() : { cpu: 0, mem: 0 };
 ---
-<div id="tree-of-life-container" class="w-full h-[600px] bg-black rounded-xl border border-magenta-500/30"></div>
+<div id="tree-of-life-container" class="w-full h-[600px] bg-black rounded-xl border border-magenta-500/30 relative cursor-move"></div>
+<div id="node-info" class="absolute top-4 left-4 bg-black/80 border border-cyan-500 p-4 rounded-lg hidden text-white">
+    <h2 id="node-name" class="text-lg font-bold"></h2>
+    <p id="node-attr" class="text-sm"></p>
+</div>
 
 <script>
   import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
   const container = document.getElementById('tree-of-life-container');
+  const nodeInfo = document.getElementById('node-info');
   
-  // Scene Setup
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(container.clientWidth, container.clientHeight);
   container.appendChild(renderer.domElement);
 
-  // Sephiroth Data Mapping
+  const controls = new OrbitControls(camera, renderer.domElement);
+
   const sephiroth = [
-    { name: "Kether", pos: [0, 5, 0], color: 0xffffff },
-    { name: "Chokmah", pos: [2, 3, 0], color: 0xcccccc },
-    { name: "Binah", pos: [-2, 3, 0], color: 0x999999 },
-    { name: "Chesed", pos: [2, 1, 0], color: 0x0000ff },
-    { name: "Geburah", pos: [-2, 1, 0], color: 0xff0000 },
-    { name: "Tiphareth", pos: [0, 0, 0], color: 0xffff00 },
-    { name: "Netzach", pos: [2, -2, 0], color: 0x00ff00 },
-    { name: "Hod", pos: [-2, -2, 0], color: 0xffa500 },
-    { name: "Yesod", pos: [0, -3, 0], color: 0x800080 },
-    { name: "Malkuth", pos: [0, -5, 0], color: 0x8b4513 },
+    { name: "Kether", pos: [0, 5, 0], color: 0xffffff, attr: "Crown" },
+    { name: "Chokmah", pos: [2, 3, 0], color: 0xcccccc, attr: "Wisdom" },
+    { name: "Binah", pos: [-2, 3, 0], color: 0x999999, attr: "Understanding" },
+    { name: "Chesed", pos: [2, 1, 0], color: 0x0000ff, attr: "Mercy" },
+    { name: "Geburah", pos: [-2, 1, 0], color: 0xff0000, attr: "Severity" },
+    { name: "Tiphareth", pos: [0, 0, 0], color: 0xffff00, attr: "Beauty" },
+    { name: "Netzach", pos: [2, -2, 0], color: 0x00ff00, attr: "Victory" },
+    { name: "Hod", pos: [-2, -2, 0], color: 0xffa500, attr: "Splendor" },
+    { name: "Yesod", pos: [0, -3, 0], color: 0x800080, attr: "Foundation" },
+    { name: "Malkuth", pos: [0, -5, 0], color: 0x8b4513, attr: "Kingdom" },
   ];
 
-  // Render Spheres
-  sephiroth.forEach(s => {
-    const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+  const spheres = sephiroth.map(s => {
+    const geometry = new THREE.SphereGeometry(0.6, 32, 32);
     const material = new THREE.MeshBasicMaterial({ color: s.color });
     const sphere = new THREE.Mesh(geometry, material);
     sphere.position.set(...s.pos);
+    sphere.userData = s;
     scene.add(sphere);
+    return sphere;
   });
 
-  camera.position.z = 10;
+  camera.position.z = 12;
 
-  function animate() {
+  // Interacción (Raycasting)
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+
+  container.addEventListener('click', (event) => {
+    const rect = container.getBoundingClientRect();
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(spheres);
+    
+    if (intersects.length > 0) {
+        const node = intersects[0].object.userData;
+        document.getElementById('node-name').innerText = node.name;
+        document.getElementById('node-attr').innerText = node.attribute;
+        nodeInfo.classList.remove('hidden');
+    } else {
+        nodeInfo.classList.add('hidden');
+    }
+  });
+
+  function animate(time) {
     requestAnimationFrame(animate);
+    spheres.forEach(sphere => {
+        const scale = 1 + Math.sin(time * 0.005) * 0.2;
+        sphere.scale.set(scale, scale, scale);
+    });
+    controls.update();
     renderer.render(scene, camera);
   }
-  animate();
+  animate(0);
 </script>
