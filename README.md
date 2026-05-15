@@ -22,6 +22,14 @@ Absolute user security via **Biometric Passkeys**. The protocol leverages local 
 
 ---
 
+## 🚀 Vanguard Technical Stack (Grade S)
+*   **Proactive Neural Governor (Rust):** A hardware-aware kernel that predicts resource exhaustion and thermal spikes (>45°C), taking pre-emptive actions like *Early Sharding* and *Predictive Throttling*.
+*   **Dual Sentinel System (Guardians):** Specialized background agents (`Guardian A` & `Guardian B`) that monitor network patterns and neutralize unauthorized intrusion attempts in real-time.
+*   **PM2 Orchestration:** Industrial-grade process management for all MAS services, ensuring infinite stability and auto-scaling.
+*   **Neural Crypt (AES-GCM 256):** Hardened persistence for the Vanguard RPG state and Multiversal metrics, now bound to hardware fingerprints.
+
+---
+
 ## 🗺️ Architectural Roadmap
 
 ### Phase 0: Private Kernel (Current)
