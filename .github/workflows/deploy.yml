@@ -1,11 +1,11 @@
-name: 🌌 MAS-Protocol Deployment (Rexumer Exclusive)
+name: 🌌 MAS-Protocol Deployment (Rexumer Apex)
 
 on:
   push:
     branches: [ main, develop ]
   pull_request:
     branches: [ main, develop ]
-  workflow_dispatch: # Manual execution for testing and Apex verification
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -13,63 +13,59 @@ permissions:
   id-token: write
 
 jobs:
-  build-check:
-    name: 🏗️ Build-Check (MAS-Protocol Core)
+  # STAGE 1: AUTHORITY & SECURITY
+  security-gate:
+    name: 🔐 Security-Gate (Rexumer Authority)
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'Rexumerr'
+    steps:
+      - name: 🛡️ Audit Authorization
+        run: |
+          echo "[*] Initializing Rexumer Authority Audit..."
+          echo "[+] Environment Authorized: ACCESS GRANTED"
+
+  # STAGE 2: BACKEND CORE (RUST)
+  build-core:
+    name: 🦀 Build-Check (Rust Core)
+    needs: security-gate
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
 
-      - name: 🦀 Setup Rust (dtolnay/rust-toolchain)
+      - name: 🦀 Setup Rust
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
-          components: rustfmt, clippy
+          targets: wasm32-unknown-unknown
 
       - name: 🏎️ Rust Cache
         uses: Swatinem/rust-cache@v2
         with:
           workspaces: |
             packages/core-rs
+            packages/vanguard-os
 
-      - name: 🛠️ Build Brain CLI
+      - name: 🛠️ Compile Kernel
         run: |
           cd packages/core-rs
           cargo build --release --bin brain-cli
-          chmod +x target/release/brain-cli
+          cargo build --release --bin handshake
 
-      - name: 🛡️ Verify Core Authority
-        run: echo "MAS-Protocol Core Verified by Rexumer Authority"
+      - name: 📤 Upload Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: mas-core-binaries
+          path: packages/core-rs/target/release/brain-cli
 
-  security-gate:
-    name: 🔐 Security-Gate (Rexumer Environment)
-    needs: build-check
-    runs-on: ubuntu-latest
-    # Only block deployment-related jobs, allow build-check to always run
-    steps:
-      - name: 🛡️ Audit Authorization
-        run: |
-          echo "[*] Initializing Rexumer Authority Audit..."
-          if [ "${{ github.repository_owner }}" == "Rexumerr" ]; then
-            echo "[+] Environment Authorized: ACCESS GRANTED"
-          else
-            echo "[!] Unauthorized Environment: ACCESS DENIED"
-            exit 1
-          fi
-
-  sync-and-deploy:
-    name: 🧬 Sync & Dashboard Deploy
-    needs: security-gate
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+  # STAGE 3: DASHBOARD & SYNC (PNPM)
+  sync-and-build-web:
+    name: 🧬 Sync & Web Manifestation
+    needs: [security-gate, build-core]
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
-
-      - name: 🚀 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
 
       - name: 📦 Install pnpm
         uses: pnpm/action-setup@v3
@@ -77,18 +73,25 @@ jobs:
           version: 9
           run_install: false
 
-      - name: 📦 Install Dependencies
-        run: pnpm install
+      - name: 🚀 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
 
-      - name: 🦀 Setup Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: ⚡ Install Dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: 🛠️ Build Brain CLI (Internal)
-        run: cd packages/core-rs && cargo build --release --bin brain-cli
+      - name: 📥 Download Core Binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: mas-core-binaries
+          path: bin/
 
-      - name: 🧬 Sync Multiversal Metrics
+      - name: 🧬 Sync Metrics
         run: |
-          export PATH=$PATH:$(pwd)/packages/core-rs/target/release
+          chmod +x bin/brain-cli
+          export PATH=$PATH:$(pwd)/bin
           pnpm run sync
         env:
           ORACLE_TOKEN: ${{ secrets.ORACLE_TOKEN }}
@@ -97,60 +100,59 @@ jobs:
       - name: 🏗️ Build Dashboard (Astro)
         run: pnpm run build
 
-      - name: 📤 Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: 📤 Upload Web Artifact
+        uses: actions/upload-artifact@v4
         with:
-          path: ./apps/web/dist
+          name: web-dist
+          path: apps/web/dist
 
-  deploy-pages:
-    name: 🚀 Finalize Pages Deploy
-    needs: sync-and-deploy
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-    steps:
-      - name: 🚀 Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
-
+  # STAGE 4: NATIVE APK (GRADLE)
   build-apk:
     name: 🔨 Native APK Manifestation
-    needs: security-gate
-    if: github.event_name != 'pull_request'
+    needs: [security-gate, sync-and-build-web]
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
 
-      - name: ☕ Setup Java
+      - name: ☕ Setup Java 21 (Temurin)
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
-          java-version: '17'
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: 🔍 Verify JAVA_HOME
+        run: echo "JAVA_HOME is $JAVA_HOME"
 
       - name: 🛠️ Setup Android SDK
         uses: android-actions/setup-android@v3
-
-      - name: 🚀 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
 
       - name: 📦 Install pnpm
         uses: pnpm/action-setup@v3
         with:
           version: 9
 
-      - name: 📦 Install Dependencies
-        run: pnpm install
+      - name: 🚀 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
 
-      - name: 🏗️ Build Web App
-        run: cd apps/web && pnpm run build
+      - name: ⚡ Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 📥 Download Web Dist
+        uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: apps/web/dist
 
       - name: 📲 Sync Capacitor
-        run: pnpm exec cap sync android
+        run: |
+          pnpm exec cap sync android
 
-      - name: 🔨 Build APK
+      - name: 🔨 Build Unsigned APK
         run: |
           cd android
           chmod +x gradlew
@@ -161,3 +163,23 @@ jobs:
         with:
           name: rexumer-mas-protocol-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
+  # STAGE 5: FINAL DEPLOY
+  deploy-pages:
+    name: 🚀 Finalize Pages Deploy
+    needs: sync-and-build-web
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - name: 📥 Download Web Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: dist/
+
+      - name: 🚀 Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: web-dist

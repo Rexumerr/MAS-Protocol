@@ -19,14 +19,14 @@ To manifest a node on a new device, follow the elite boot sequence:
 git clone https://github.com/Rexumerr/MAS-Protocol.git -b develop
 cd MAS-Protocol
 
-# 2. Setup environment
-pnpm install
-./VANGUARD_BOOT.sh
+# 2. Setup environment (One-time manual step for cloud gate)
+gh auth login
 
-# 3. Compile the Kernel
-cd packages/core-rs && cargo build --release
-cd ../vanguard-os && cargo build --release
+# 3. Elite Boot (Automation takes over)
+./VANGUARD_BOOT.sh
 ```
+
+The boot loader now incorporates **Apex Security Auto-Handshake**, which automatically generates and synchronizes `ORACLE_TOKEN` with the GitHub cloud repository.
 
 ## 3. 🛡️ Security & Sovereignty
 ### 3.1 Hardware-Bound Encryption
