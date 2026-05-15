@@ -1,90 +1,51 @@
----
----
-<div class="bg-black/90 border border-magenta-500/30 rounded-xl overflow-hidden font-mono shadow-[0_0_20px_rgba(255,0,255,0.1)] backdrop-blur-md">
-    <div class="bg-magenta-900/20 px-4 py-2 border-b border-magenta-500/30 flex justify-between items-center">
-        <span class="text-[10px] text-magenta-400 font-bold uppercase tracking-widest animate-pulse">Neural Vanguard Terminal v2.0.26</span>
-        <div class="flex space-x-2">
-            <div class="w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_5px_rgba(0,255,255,0.8)]"></div>
-            <div class="w-2 h-2 rounded-full bg-magenta-500 shadow-[0_0_5px_rgba(255,0,255,0.8)]"></div>
-        </div>
+<div class="px-4 py-2 bg-magenta-900/10 border-t border-magenta-500/20 flex items-center justify-between">
+    <div class="flex items-center">
+        <span class="text-magenta-500 mr-2">$</span>
+        <input type="text" class="bg-transparent border-none outline-none text-cyan-400 w-full text-[10px] placeholder:text-cyan-900" placeholder="Execute vanguard command (e.g. 'forge --all')..." />
     </div>
-    <div id="terminal-logs" class="p-4 h-80 overflow-y-auto text-[10px] leading-relaxed text-cyan-300/80 space-y-1 scrollbar-hide">
-        <p class="text-magenta-400 font-bold">[SYSTEM] Initializing Vanguard RPG Meta-Layer...</p>
-        <p class="text-cyan-400">[SYSTEM] Kernel: Rust 2024 Edition (Vanguard)</p>
-        <p class="text-cyan-400">[SYSTEM] Security: AES-GCM 256-bit Hardened.</p>
-        <p>[SYSTEM] Status: All RPG Skills Synchronized.</p>
-        <p class="text-magenta-400">> Swarm: Harvesting RawData in Sector_7... (Farming XP++)</p>
-        <p class="text-green-400">> Smithing: Forging automation_bot... 45% complete.</p>
+    <div id="thermal-alert" class="hidden flex items-center gap-1 px-2 py-0.5 bg-red-900/40 border border-red-500/50 rounded-full animate-bounce">
+        <span class="text-[8px] font-mono text-red-400 whitespace-nowrap">❄️ COOLING ACTIVE</span>
     </div>
-    <div class="px-4 py-2 bg-magenta-900/10 border-t border-magenta-500/20 flex items-center justify-between">
-        <div class="flex items-center">
-            <span class="text-magenta-500 mr-2">$</span>
-            <input type="text" class="bg-transparent border-none outline-none text-cyan-400 w-full text-[10px] placeholder:text-cyan-900" placeholder="Execute vanguard command (e.g. 'forge --all')..." />
-        <div id="thermal-alert" class="hidden flex items-center gap-1 px-2 py-0.5 bg-red-900/40 border border-red-500/50 rounded-full animate-bounce">
-            <span class="text-[8px] font-mono text-red-400 whitespace-nowrap">❄️ COOLING ACTIVE</span>
-        </div>
-        <button id="auth-btn" class="px-2 py-1 bg-cyan-500/20 border border-cyan-500/50 rounded text-[10px] text-cyan-400 hover:bg-cyan-500/40">
-            🔐 UNLOCK VANGUARD
-        </button>
-        </div>
-        </div>
+    <button id="auth-btn" class="px-2 py-1 bg-cyan-500/20 border border-cyan-500/50 rounded text-[10px] text-cyan-400 hover:bg-cyan-500/40">
+        🔐 UNLOCK VANGUARD
+    </button>
+</div>
+<div id="terminal-logs" class="p-4 h-48 overflow-y-auto text-[10px] font-mono text-cyan-500"></div>
 
-        <script>
-        import { BiometricAuth } from 'capacitor-biometric-auth';
-
+<script is:inline>
+    window.addEventListener('DOMContentLoaded', async () => {
         const authBtn = document.getElementById('auth-btn');
-        authBtn.addEventListener('click', async () => {
-        try {
-        const result = await BiometricAuth.checkBiometry();
-        if (result.isAvailable) {
-            const auth = await BiometricAuth.authenticate({ title: 'Vanguard Access', reason: 'Authenticate to unlock Neural Crypt' });
-            if (auth.authenticated) {
-                alert("Vanguard Access Granted. System Unlocked.");
-            }
+        if (authBtn) {
+            authBtn.addEventListener('click', async () => {
+                try {
+                    const { BiometricAuth } = await import('capacitor-biometric-auth');
+                    const result = await BiometricAuth.checkBiometry();
+                    if (result.isAvailable) {
+                        const auth = await BiometricAuth.authenticate({ title: 'Vanguard Access', reason: 'Authenticate to unlock Neural Crypt' });
+                        if (auth.authenticated) alert("Vanguard Access Granted.");
+                    }
+                } catch (e) { console.error("Biometric failure:", e); }
+            });
         }
-        } catch (e) {
-        console.error("Biometric failure", e);
-        }
-        });
-        // ... rest of scripts
-        </script>
 
-        "> Brain: Recalculating Alchemy efficiency for Universe-7...",
-        "> Oracle: Event 'raw_data_scraped' ingested. +250 XP in Farming.",
-        "> Smithing: New Infrastructure Scraps collected. +50 Smithing XP.",
-        "> [ALERT] Security Breach detected in Dimension-0. Deploying Combat Agents...",
-        "> Combat: Breach successfully neutralized. +1500 XP.",
-        "> Merchanting: High-ticket transaction detected. Revenue +$12.5k.",
-        "> System: Level 99 goal for Farming at 88% completion.",
-        "> [VANGUARD] Avatar 'Novice Architect' is evolving..."
-    ];
+        const logs = ["> Oracle: Ingesting...", "> Brain: Calibrating...", "> [VANGUARD] Evolving..."];
+        const container = document.getElementById('terminal-logs');
+        const thermalAlert = document.getElementById('thermal-alert');
+        let i = 0;
 
-    const container = document.getElementById('terminal-logs');
-    const thermalAlert = document.getElementById('thermal-alert');
-    let i = 0;
+        setInterval(async () => {
+            if (!container) return;
+            const p = document.createElement('p');
+            p.textContent = logs[i % logs.length];
+            container.appendChild(p);
+            container.scrollTop = container.scrollHeight;
+            i++;
 
-    setInterval(async () => {
-        if (!container) return;
-        const p = document.createElement('p');
-        p.textContent = logs[i % logs.length];
-        if (p.textContent.includes('ALERT')) p.className = 'text-red-500 font-bold animate-pulse';
-        if (p.textContent.includes('XP')) p.className = 'text-cyan-400';
-        if (p.textContent.includes('VANGUARD')) p.className = 'text-magenta-400 font-bold italic';
-        container.appendChild(p);
-        container.scrollTop = container.scrollHeight;
-        i++;
-
-        // Fetch Real Telemetry from Governor Bridge
-        try {
-            const res = await fetch('/health-status.json');
-            const status = await res.json();
-            if (status.cooling_active) {
-                thermalAlert?.classList.remove('hidden');
-            } else {
-                thermalAlert?.classList.add('hidden');
-            }
-        } catch (e) {
-            console.warn("Telemetry bridge unreachable.");
-        }
-    }, 2500);
+            try {
+                const res = await fetch('/health-status.json');
+                const status = await res.json();
+                thermalAlert.classList.toggle('hidden', !status.cooling_active);
+            } catch (e) {}
+        }, 2500);
+    });
 </script>
