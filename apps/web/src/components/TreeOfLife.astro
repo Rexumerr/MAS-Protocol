@@ -1,0 +1,47 @@
+---
+---
+<div id="tree-of-life-container" class="w-full h-[600px] bg-black rounded-xl border border-magenta-500/30"></div>
+
+<script>
+  import * as THREE from 'three';
+
+  const container = document.getElementById('tree-of-life-container');
+  
+  // Scene Setup
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  container.appendChild(renderer.domElement);
+
+  // Sephiroth Data Mapping
+  const sephiroth = [
+    { name: "Kether", pos: [0, 5, 0], color: 0xffffff },
+    { name: "Chokmah", pos: [2, 3, 0], color: 0xcccccc },
+    { name: "Binah", pos: [-2, 3, 0], color: 0x999999 },
+    { name: "Chesed", pos: [2, 1, 0], color: 0x0000ff },
+    { name: "Geburah", pos: [-2, 1, 0], color: 0xff0000 },
+    { name: "Tiphareth", pos: [0, 0, 0], color: 0xffff00 },
+    { name: "Netzach", pos: [2, -2, 0], color: 0x00ff00 },
+    { name: "Hod", pos: [-2, -2, 0], color: 0xffa500 },
+    { name: "Yesod", pos: [0, -3, 0], color: 0x800080 },
+    { name: "Malkuth", pos: [0, -5, 0], color: 0x8b4513 },
+  ];
+
+  // Render Spheres
+  sephiroth.forEach(s => {
+    const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+    const material = new THREE.MeshBasicMaterial({ color: s.color });
+    const sphere = new THREE.Mesh(geometry, material);
+    sphere.position.set(...s.pos);
+    scene.add(sphere);
+  });
+
+  camera.position.z = 10;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+  }
+  animate();
+</script>

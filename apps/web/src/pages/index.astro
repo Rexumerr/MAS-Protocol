@@ -2,12 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import CapabilityCard from '../components/CapabilityCard.astro';
 import NeuralTerminal from '../components/NeuralTerminal.astro';
-import MultiverseStand from '../components/MultiverseStand.astro';
-import fs from 'node:fs';
-import path from 'node:path';
+import TreeOfLife from '../components/TreeOfLife.astro';
 
-// VANGUARD STATE DECODING (Mocked for now as it's AES-GCM encrypted in the core)
-// In a real scenario, we'd use a server-side helper or a WASM module to decrypt this
 let multiverseState = {
     Farming: 85,
     Smithing: 99,
@@ -18,12 +14,12 @@ let multiverseState = {
 };
 
 const capabilities = [
-  { name: 'Farming', level: multiverseState.Farming, xp: '12.5M', icon: '🌾', color: 'green' as const },
-  { name: 'Smithing', level: multiverseState.Smithing, xp: '13.1M', icon: '⚒️', color: 'magenta' as const },
-  { name: 'Alchemy', level: multiverseState.Alchemy, xp: '8.2M', icon: '🧪', color: 'cyan' as const },
-  { name: 'Combat', level: multiverseState.Combat, xp: '5.9M', icon: '⚔️', color: 'magenta' as const },
-  { name: 'Merchanting', level: multiverseState.Merchanting, xp: '3.1M', icon: '💰', color: 'cyan' as const },
-  { name: 'Optimization', level: multiverseState.Optimization, xp: '12.1M', icon: '📈', color: 'green' as const },
+  { name: 'Farming', level: multiverseState.Farming, xp: '12.5M', icon: '🌾', color: 'green' },
+  { name: 'Smithing', level: multiverseState.Smithing, xp: '13.1M', icon: '⚒️', color: 'magenta' },
+  { name: 'Alchemy', level: multiverseState.Alchemy, xp: '8.2M', icon: '🧪', color: 'cyan' },
+  { name: 'Combat', level: multiverseState.Combat, xp: '5.9M', icon: '⚔️', color: 'magenta' },
+  { name: 'Merchanting', level: multiverseState.Merchanting, xp: '3.1M', icon: '💰', color: 'cyan' },
+  { name: 'Optimization', level: multiverseState.Optimization, xp: '12.1M', icon: '📈', color: 'green' },
 ];
 ---
 
@@ -39,16 +35,11 @@ const capabilities = [
 					MAS <span class="text-orange-500 italic">PHOENIX</span>
 				</h1>
 			</div>
-			<div class="mt-4 md:mt-0 text-right">
-				<p class="text-[10px] text-magenta-500 font-bold uppercase tracking-[0.3em]">Protocol: Ultra-Brain v2.0</p>
-				<p class="text-3xl font-black text-cyan-400 italic">0.00021s <span class="text-white/20 text-sm not-italic">LATENCY</span></p>
-			</div>
 		</header>
 
-		<!-- 3D HERO SECTION -->
 		<div class="relative grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
 			<div class="lg:col-span-2">
-				<MultiverseStand />
+				<TreeOfLife />
 			</div>
 			<div class="grid grid-cols-1 gap-6">
 				{capabilities.slice(0, 3).map(cap => (
@@ -62,94 +53,6 @@ const capabilities = [
 				<CapabilityCard {...cap} />
 			))}
 		</div>
-
-		<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative">
-			<div class="lg:col-span-2 space-y-8">
-				<!-- VANGUARD WORKSTATION PORTAL -->
-				<section class="bg-black/60 border border-cyan-500/30 p-8 rounded-3xl backdrop-blur-xl shadow-[0_0_30px_rgba(0,255,255,0.05)] relative overflow-hidden group">
-					<div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-100 transition-opacity">
-						<span class="text-[8px] text-cyan-400 font-mono">DOCKER_ENGINE: STANDBY</span>
-					</div>
-					<h2 class="text-2xl font-black mb-6 flex items-center italic text-cyan-400">
-						<span class="text-magenta-500 mr-3">//</span> VANGUARD WORKSTATION
-					</h2>
-					<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-						<a href="http://localhost:8080" target="_blank" class="flex flex-col p-6 bg-cyan-900/10 border border-cyan-500/20 rounded-2xl hover:bg-cyan-500/20 transition-all group/item">
-							<span class="text-[10px] text-cyan-500 font-bold uppercase mb-2">IDE Interface</span>
-							<span class="text-xl font-black text-white italic tracking-tighter group-hover/item:text-cyan-400">LAUNCH VS-CODE</span>
-							<p class="text-[8px] text-white/30 mt-2">v4.118.0 Arm64 | Encrypted Tunnel</p>
-						</a>
-						<div class="flex flex-col p-6 bg-magenta-900/10 border border-magenta-500/20 rounded-2xl relative">
-							<span class="text-[10px] text-magenta-500 font-bold uppercase mb-2">Container Orchestration</span>
-							<span class="text-xl font-black text-white italic tracking-tighter">DOCKER HUB</span>
-							<div class="flex items-center mt-3 space-x-2">
-								<div class="h-1 w-12 bg-magenta-900 rounded-full overflow-hidden">
-									<div class="h-full bg-magenta-500 w-1/3 animate-pulse"></div>
-								</div>
-								<span class="text-[8px] text-magenta-300/50 font-mono">PULLING_VANGUARD_IMG...</span>
-							</div>
-						</div>
-					</div>
-				</section>
-
-				<section class="bg-black/60 border border-magenta-500/20 p-8 rounded-3xl backdrop-blur-xl shadow-[0_0_30px_rgba(255,0,255,0.05)]">
-					<h2 class="text-2xl font-black mb-6 flex items-center italic text-magenta-400">
-						<span class="text-cyan-500 mr-3">//</span> ACTIVE EPIC QUESTS
-					</h2>
-					<div class="space-y-8">
-						<div class="group cursor-pointer">
-							<div class="flex justify-between mb-3 items-end">
-								<div>
-									<span class="text-[10px] text-cyan-500 font-bold uppercase block mb-1">Farming Objective</span>
-									<span class="text-sm font-black text-white italic tracking-widest uppercase">The Great May Harvest</span>
-								</div>
-								<span class="text-xl text-cyan-400 font-black italic">88%</span>
-							</div>
-							<div class="w-full bg-black/50 h-2 rounded-full overflow-hidden border border-white/5">
-								<div class="bg-gradient-to-r from-cyan-600 to-blue-400 w-[88%] h-full group-hover:from-cyan-400 group-hover:to-blue-300 transition-all shadow-[0_0_15px_rgba(0,255,255,0.5)]"></div>
-							</div>
-						</div>
-						<div class="group cursor-pointer opacity-40 grayscale hover:opacity-100 hover:grayscale-0 transition-all">
-							<div class="flex justify-between mb-3 items-end">
-								<div>
-									<span class="text-[10px] text-magenta-500 font-bold uppercase block mb-1">Smithing Objective</span>
-									<span class="text-sm font-black text-white italic tracking-widest uppercase">Infrastructure Forge</span>
-								</div>
-								<span class="text-xl text-magenta-500 font-black italic">LOCKED</span>
-							</div>
-							<div class="w-full bg-black/50 h-2 rounded-full border border-white/5"></div>
-						</div>
-					</div>
-				</section>
-
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-					<div class="bg-magenta-600/90 p-8 rounded-3xl group cursor-pointer hover:bg-magenta-500 transition-all shadow-[0_0_20px_rgba(255,0,255,0.2)] border border-white/10">
-						<h3 class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-magenta-100">Merchanting Revenue</h3>
-						<p class="text-5xl font-black italic text-white tracking-tighter">$2.4M+</p>
-						<span class="text-[10px] font-bold text-magenta-200 mt-2 block animate-pulse">↑ 12% FROM LAST CYCLE</span>
-					</div>
-					<div class="bg-black/40 border border-cyan-500/20 p-8 rounded-3xl backdrop-blur-md">
-						<h3 class="text-[10px] font-black uppercase tracking-[0.3em] mb-4 text-cyan-700">Core Stability</h3>
-						<p class="text-5xl font-black italic text-cyan-400">99.9<span class="text-sm text-cyan-900">%</span></p>
-						<span class="text-[10px] font-bold text-green-500 mt-2 block uppercase tracking-widest">Optimal Sync</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="space-y-6">
-				<NeuralTerminal />
-				<div class="bg-gradient-to-br from-black to-[#0a0a0a] border border-magenta-500/20 p-8 rounded-3xl shadow-inner">
-					<h3 class="text-[10px] font-black mb-4 uppercase tracking-[0.4em] text-magenta-900 italic">Architect Directives</h3>
-					<p class="text-xs leading-relaxed text-white/40 italic font-light">
-						"The vanguard doesn't just automate; it transcends. Every data point harvested is a step towards multiversal dominance."
-					</p>
-				</div>
-			</div>
-		</div>
-
-		<footer class="mt-20 border-t border-white/5 pt-8 flex justify-between items-center text-[8px] text-white/20 font-black uppercase tracking-[0.5em]">
-			<span>© 2026 MAS VANGUARD PROTOCOL</span>
-			<span>Encrypted by Neural Crypt v2.0</span>
-		</footer>
+        <NeuralTerminal />
 	</main>
 </Layout>
